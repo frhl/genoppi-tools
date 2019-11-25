@@ -1,2 +1,2 @@
-# genoppi-tools
-Tools for working with proteomics data 
+# pRoteomics
+Tools for working with proteomics data for genoppi.
