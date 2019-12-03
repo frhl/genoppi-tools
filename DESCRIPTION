@@ -10,7 +10,6 @@ Maintainer: Frederik <frhl@gmail.com>
 Description: Tools for working with proteomics data
 License: MIT + file LICENSE
 LazyData: true
-BugReports: https://github.com/r-lib/desc/issues
 Depends:
     R (>= 3.1.0)
 Suggests:
@@ -25,9 +24,10 @@ Encoding: UTF-8
 RoxygenNote: 7.0.2
 Collate: 
     'clean.R'
+    'geneTable.R'
+    'genesData.R'
     'misc.R'
     'normalize.R'
-    'snp2gene.R'
-    'transform.R'
-
+    'pTransform.R'
+    'snpToGene.R'
 

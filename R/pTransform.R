@@ -5,7 +5,7 @@
 #' @author flassen
 #' @export
 
-transform <- function(table = NULL, type = 'log2'){
+pTransform <- function(table = NULL, type = 'log2'){
   
   columns_numeric <- sapply(table, is.numeric)
   table_transformed <- do.call(type, list(table[, columns_numeric]))
