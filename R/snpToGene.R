@@ -3,10 +3,10 @@
 #' @author flassen
 #' @export
 #' @note uses \code{null.omit} from misc.R
-#' @examples snp2gene('rs142920272')
+#' @examples \dontrun{snp2gene('rs142920272')}
 
 
-snp2gene <- function(snp, reference = 'data/snp_to_gene.RData', verbose = T){
+snpToGene <- function(snp, reference = 'data/snp_to_gene.RData', verbose = T){
 
   if ('genes_snps' %nin% ls(envir = .GlobalEnv)) 
     {write('reading SNP/Gene refrence..',stderr());load(reference)}
@@ -19,6 +19,8 @@ snp2gene <- function(snp, reference = 'data/snp_to_gene.RData', verbose = T){
   names(result) = genes
   return(null.omit(result))
 }
+
+
 
 
 
