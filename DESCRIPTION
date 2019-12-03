@@ -1,4 +1,4 @@
-Package: rProteomics
+Package: pRroteomics
 Title: Manipulate DESCRIPTION Files
 Version: 0.1.0
 Authors@R: 
@@ -11,9 +11,12 @@ Description: Tools for working with proteomics data
 License: MIT + file LICENSE
 LazyData: true
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.6.1)
 Suggests:
-    dplyr
+    dplyr,
+    ggplot2,
+    hash,
+    ggrepel
 Imports:
     assertthat,
     utils,
