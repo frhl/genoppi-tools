@@ -22,3 +22,6 @@ clean <- function(table, protein_column = NULL, threshold = 0, verbose = TRUE){
   
   return(table)
 }
+
+
+
