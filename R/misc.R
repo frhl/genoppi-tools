@@ -1,3 +1,5 @@
+
+#' @title misc tools
 #' @rdname misc
 #' @export
 
@@ -9,6 +11,7 @@ lun <- function(x) length(unique(as.vector(x)))
 #' @export
 '%nin%' <- function(x, y) !(x %in% y)
 
+#' @title omit nulls from list
 #' @description remove NULLs in list
 #' @export
 null.omit <- function(x) {
