@@ -7,7 +7,7 @@ Authors@R:
              role = c("aut", "cre"),
              email = "frhl@gmail.com"))
 Maintainer: Frederik <frhl@gmail.com>
-Description: Tools for working with proteomics data
+Description: Tools for working with proteomics data.
 License: MIT + file LICENSE
 LazyData: true
 Depends:
