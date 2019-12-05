@@ -9,7 +9,8 @@
 data(snps_genes)
 }
 \description{
-data from genoppi used to map snps to gene.
+data from genoppi used to map snps to gene. 
+Todo: ask april about reference, think its hg19
 }
 \examples{
 data(genes_snps)

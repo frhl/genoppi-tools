@@ -17,3 +17,10 @@ lun <- function(x) length(unique(as.vector(x)))
 null.omit <- function(x) {
   x[!vapply(x, is.null, logical(1))]
 }
+
+#' @title warnings to stderr
+#' @description sends a message to stderr
+#' @export
+warn <- function(msg){
+  write(msg,stderr())
+}
