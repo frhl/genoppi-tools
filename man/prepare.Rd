@@ -4,7 +4,16 @@
 \alias{prepare}
 \title{pipeline for process proteomics data}
 \usage{
-prepare(bait, infile, cols = NULL, impute = NULL)
+prepare(
+  bait,
+  infile,
+  cols = NULL,
+  impute = NULL,
+  transform = "log2",
+  normalization = "median",
+  filter = "HUMAN",
+  verbose = F
+)
 }
 \arguments{
 \item{bait}{a vector containing that contains the bait and cell type that should be matched in a column.}
@@ -15,6 +24,14 @@ prepare(bait, infile, cols = NULL, impute = NULL)
 the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..}
 
 \item{impute}{how should missing data be imputed? NULL means that missing data rows are dropped.}
+
+\item{transform}{charcacter. an R-command for how the data should be transformed.}
+
+\item{normalization}{character. an R-command for how the data should be collumn-wise transformned.}
+
+\item{filter}{character. only accession IDs of the filter specified are included.}
+
+\item{verbose}{boolean. if true, returns the table and a list with updates.}
 }
 \value{
 a table that can be inputted to genoppi

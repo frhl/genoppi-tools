@@ -3,8 +3,6 @@
 .libPaths(c("~/Toolbox/rlib/",.libPaths()))
 devtools::load_all()
 
-
-
 test_that('that this output matches something we have generated before',{
   
   ## check standard fucntionality
@@ -14,9 +12,33 @@ test_that('that this output matches something we have generated before',{
   dat = prepare(bait, data, cols = c("Accession", "Intensity.SMC_FLT1.iTRAQ4.114.", "Intensity.SMC_mockF1.iTRAQ4.116.", 
                                      "Intensity.SMC_FLT2.iTRAQ4.115.", "Intensity.SMC_mockF2.iTRAQ4.117."))
   result <- dat[, c('rep1', 'rep2')]
+  rownames(result) <- NULL
+  
   reference <- read.csv('tests/testthat/reference/prepare/SMC_FLT1.NoImp.GenoppiInput.txt', sep = '\t')[,c(2,3)]
+  reference <- reference[complete.cases(reference),]
+  rownames(reference) <- NULL
+  
   expect_equal(result,reference)
 })
+
+
+test_that('that columns can be guess for iTRAQ (WHITEHEAD)',{
+  
+  ## check standard fucntionality
+  id <- 'A1'
+  bait = c('SMC','FLT')
+  data = 'tests/testthat/data/14martin_FLT1_proteins.csv'
+  dat = prepare(bait, data)
+  result <- dat[, c('rep1', 'rep2')]
+  rownames(result) <- NULL
+  
+  reference <- read.csv('tests/testthat/reference/prepare/SMC_FLT1.NoImp.GenoppiInput.txt', sep = '\t')[,c(2,3)]
+  reference <- reference[complete.cases(reference),]
+  rownames(reference) <- NULL
+  
+  expect_equal(result,reference)
+})
+
 
 
 # need to do it bait-wise instead of file-wise

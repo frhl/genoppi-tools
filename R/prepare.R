@@ -6,9 +6,13 @@
 #' @param cols optional manual entry. A vector of columns that are present in the dataset header. Follows 
 #' the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..
 #' @param impute how should missing data be imputed? NULL means that missing data rows are dropped.
+#' @param transform charcacter. an R-command for how the data should be transformed.
+#' @param normalization character. an R-command for how the data should be collumn-wise transformned.
+#' @param filter character. only accession IDs of the filter specified are included.
+#' @param verbose boolean. if true, returns the table and a list with updates.
 #' @return a table that can be inputted to genoppi
 
-prepare <- function(bait, infile, cols = NULL, impute = NULL){
+prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2', normalization = 'median', filter = "HUMAN", verbose = F){
   
   # check input
   if (any(!file.exists(infile))) stop('one of the inputted files does not exist.')
@@ -40,25 +44,34 @@ prepare <- function(bait, infile, cols = NULL, impute = NULL){
   info$count.na <- sum(as.numeric(is.na(tmpData)))
   
   # 1) transform the data and 2) median normalizeation
-  tmpData = pTransform(tmpData, type = 'log2')
-  tmpData = normalize(tmpData, type = 'median')
+  tmpData = pTransform(tmpData, type = transform)
+  tmpData = normalize(tmpData, type = normalization)
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
-  rowsContamninated <- !(data[,info$col.unique.proteins] >= 2) & grepl('HUMAN', data[,info$col.accession])
-  info$count.contaminated <- sum(as.numeric(rowsContamninated))
-  
-  tmpData <- tmpData[!rowsContamninated,]
+  rowsEnoughProteins <- !(data[,info$col.unique.proteins] >= 2) 
+  tmpData <- tmpData[!rowsEnoughProteins,]
+  info$rows.with.too.few.proteins <- sum(as.numeric(rowsEnoughProteins))
+  rowsNotHuman <- !grepl(filter, tmpData[,1])
+  tmpData <- tmpData[!rowsNotHuman,]
+  info$rows.removed.by.filter <- sum(as.numeric(rowsNotHuman))
       
   # 4) extract gene only
-  tmpData[,1] <- strsplitgene(tmpData[,1])
+  tmpData[,1] <- strSplitGene(tmpData[,1])
       
   # 5) impute if needed
   tmpData = tmpData[complete.cases(tmpData),]
+  info$total.rows.remove <- nrow(data) - nrow(tmpData)
   
   # 6) calculate log fold change
   tmpData = logFC(tmpData)
   
-  return(tmpData)
+  ## resulting data
+  if (!verbose){
+    return(tmpData)
+  } else {
+    return(list(data=tmpData, info=info))
+  }
+
 }
 
 
