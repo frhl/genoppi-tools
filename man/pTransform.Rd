@@ -6,6 +6,11 @@
 \usage{
 pTransform(table = NULL, type = "log2")
 }
+\arguments{
+\item{table}{a data.frame containing numeric columns}
+
+\item{type}{an r-command like 'log2' or 'log10'.}
+}
 \description{
 Normalize a table of label or label free data. 
 The function will transform all numeric columns.

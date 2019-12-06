@@ -6,6 +6,9 @@
 \usage{
 logFC(df)
 }
+\arguments{
+\item{df}{a data.frame with bait and controls}
+}
 \description{
 Calculates log fold change by substracting
 a case column with a bait column

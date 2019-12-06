@@ -13,25 +13,32 @@ LazyData: true
 Depends:
     R (>= 3.6.1)
 Suggests:
-    dplyr,
-    ggplot2,
-    hash,
-    ggrepel
+    dplyr
 Imports:
     assertthat,
     utils,
     R6,
     crayon,
-    rprojroot
+    rprojroot,
+    hash,
+    ggplot2,
+    ggrepel,
+    limma
 Encoding: UTF-8
 RoxygenNote: 7.0.2
 Collate: 
     'describe.R'
     'geneTable.R'
     'genesData.R'
+    'genoppi.R'
+    'inwebData.R'
     'logFC.R'
     'misc.R'
+    'moderatedTTest.R'
     'normalize.R'
+    'plotOverlap.R'
+    'plotScatter.R'
+    'plotVolcano.R'
     'prepare.R'
     'pTransform.R'
     'snpToGene.R'

@@ -14,7 +14,7 @@ prepare(bait, infile, cols = NULL, impute = NULL)
 \item{cols}{optional manual entry. A vector of columns that are present in the dataset header. Follows 
 the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..}
 
-\item{infiles}{a vector of paths to the data files (expects .csv)}
+\item{impute}{how should missing data be imputed? NULL means that missing data rows are dropped.}
 }
 \value{
 a table that can be inputted to genoppi

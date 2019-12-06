@@ -8,6 +8,8 @@
 lun <- function(x) length(unique(as.vector(x)))
 
 #' @description returns true for x not in y
+#' @param x value x
+#' @param y value y
 #' @export
 '%nin%' <- function(x, y) !(x %in% y)
 

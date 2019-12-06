@@ -3,10 +3,10 @@
 \docType{data}
 \name{genes_snps}
 \alias{genes_snps}
-\title{Arabidopsis QTL data on gravitropism}
+\title{gene table (old)}
 \format{An object of class \code{hash} of length 18116.}
 \usage{
-data(snps_genes)
+data(genes_snps)
 }
 \description{
 data from genoppi used to map snps to gene. 

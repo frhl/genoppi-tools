@@ -1,6 +1,7 @@
 #' @title Transform data
 #' @description Calculates log fold change by substracting
 #' a case column with a bait column
+#' @param df a data.frame with bait and controls
 #' @author flassen
 #' @export
 

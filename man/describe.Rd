@@ -4,10 +4,12 @@
 \alias{describe}
 \title{Describe data}
 \usage{
-describe(data, checkfor = NULL, verbose = F)
+describe(data, verbose = F)
 }
 \arguments{
 \item{data}{a data.frame with proteomics data}
+
+\item{verbose}{print to stdout}
 }
 \description{
 A function that will take a data.frame

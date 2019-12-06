@@ -3,11 +3,12 @@
 #' and describe the columns, type of data which will be returned in
 #' a list
 #' @param data a data.frame with proteomics data
+#' @param verbose print to stdout
 #' @author flassen
 #' @export
 
 
-describe <- function(data, checkfor = NULL, verbose = F){
+describe <- function(data, verbose = F){
   
   info <- list()
   cnames <- tolower(colnames(data))
