@@ -7,8 +7,9 @@
 #' @param fdr_cutoff numeric value or "NA"
 #' @param bait_name bait name
 #' @param gene_lists_file file containing gene list file names, or "NA"
-#' @param output_stats_file output file containing moderated t-test stats
-#' @param output_plots_file output file containing plots
+#' @param imp_list_file file containing an overview over which proteins were imputed
+#' @param output_stats_file output file containing moderated t-test stats (must be a .txt file)
+#' @param output_plots_file output file containing plots (must be a .pdf file)
 #' @author aprilkim/Yuhanshu/flassen
 
 # functions modified from Genoppi source code
@@ -21,8 +22,8 @@
 
 
 
-genoppi <- function(args, input_file, fc_cutoff, fdr_cutoff, p_cutoff, bait_name, imp_list_file, 
-                    gene_lists_file, output_stats_file, output_plots_file){
+genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
+                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA){
   
   #input_file <- 'GenoppiInput/BCL2.HDFNvsG401.NoImp.GenoppiInput.txt' 
   #fc_cutoff <- 'both'

@@ -2,7 +2,7 @@
 #' @description a function that will process ip data
 #' from different baits, files and cells
 #' @param bait a vector containing that contains the bait and cell type that should be matched in a column.
-#' @param infile the file that contains the raw data, i.e. accession numbers, intensity values, ratios etc.
+#' @param infile the file path or data.frame that contains the raw data, i.e. accession numbers, intensity values, ratios etc.
 #' @param cols optional manual entry. A vector of columns that are present in the dataset header. Follows 
 #' the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..
 #' @param impute how should missing data be imputed? NULL means that missing data rows are dropped.
@@ -14,11 +14,8 @@
 
 prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2', normalization = 'median', filter = "HUMAN", verbose = F){
   
-  # check input
-  if (any(!file.exists(infile))) stop('one of the inputted files does not exist.')
-
   ## do some initial checks
-  data = read.csv(infile) 
+  if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
   info = describe(data)
   cnames = colnames(data)
     
