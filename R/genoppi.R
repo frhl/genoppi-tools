@@ -11,19 +11,16 @@
 #' @param output_stats_file output file containing moderated t-test stats (must be a .txt file)
 #' @param output_plots_file output file containing plots (must be a .pdf file)
 #' @author aprilkim/Yuhanshu/flassen
-
-# functions modified from Genoppi source code
-
-#rm(list=ls())
-#library(limma)
-#library(ggplot2)
-#library(ggrepel)
-#library(hash)
-
-
+#' @note functions modified from Genoppi source code
+#' @export
 
 genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
                     fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA){
+
+  require(limma)
+  require(ggplot2)
+  require(ggrepel)
+  require(hash)
   
   #input_file <- 'GenoppiInput/BCL2.HDFNvsG401.NoImp.GenoppiInput.txt' 
   #fc_cutoff <- 'both'
@@ -39,7 +36,7 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   input_df <- read.table(input_file,header=T,sep="\t")
   
   # calculate and output moderated t-test statistics
-  out_stats <- calculate_moderated_ttest(input_df)
+  out_stats <- moderatedTTest(input_df)
   write.table(out_stats,file=output_stats_file,row.names=F,sep="\t",quote=F)
   
   # define signifcant proteins
@@ -52,13 +49,13 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   significant_pos <- out_stats$logFC > 0
   significant_neg <- out_stats$logFC < 0
   
-  if (p_cutoff!="NA") {
+  if (!is.na(p_cutoff)) {
   	p_cutoff <- as.numeric(p_cutoff)
   	out_stats$significant <- out_stats$significant & out_stats$pvalue < p_cutoff
   	significant_pos <- significant_pos & out_stats$pvalue < p_cutoff
   	significant_neg <- significant_neg & out_stats$pvalue < p_cutoff
   }
-  if (fdr_cutoff!="NA") {
+  if (!is.na(fdr_cutoff)) {
   	fdr_cutoff <- as.numeric(fdr_cutoff)
   	out_stats$significant <- out_stats$significant & out_stats$FDR < fdr_cutoff
   	significant_pos <- significant_pos & out_stats$FDR < fdr_cutoff
@@ -67,13 +64,12 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   
   # generate plots and run enrichment tests
   pdf(output_plots_file,height=4,width=4)
-  
   plotVolcano(out_stats, bait_name)
   plotScatter(out_stats, bait_name)
   
   
   # label IMPUTED genes on volcano plot
-  if (imp_list_file != 'NA') {
+  if (!is.na(imp_list_file)) {
   	impDf <- read.table(imp_list_file,header=T,sep="\t")
   	plotOverlap(out_stats,bait_name,'IMPUTED',impDf,FALSE)
   }
@@ -103,7 +99,7 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   }
   
   # with gene lists overlap enrichment
-  if (gene_lists_file != 'NA') {
+  if (!is.na(gene_lists_file)) {
   	geneListTable <- read.table(gene_lists_file,header=T,sep="\t",stringsAsFactors=F)
   	# loop through each gene list
   	for (i in 1:dim(geneListTable)[1]) {
@@ -121,5 +117,5 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   	}
   }
   
-  dev.off()
+  graphics.off()
 }

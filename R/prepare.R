@@ -9,10 +9,11 @@
 #' @param transform charcacter. an R-command for how the data should be transformed.
 #' @param normalization character. an R-command for how the data should be collumn-wise transformned.
 #' @param filter character. only accession IDs of the filter specified are included.
+#' @param raw will return the data.frame alongside the raw intensity values.
 #' @param verbose boolean. if true, returns the table and a list with updates.
 #' @return a table that can be inputted to genoppi
 
-prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2', normalization = 'median', filter = "HUMAN", verbose = F){
+prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, verbose = F){
   
   ## do some initial checks
   if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
@@ -61,6 +62,11 @@ prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2'
   
   # 6) calculate log fold change
   tmpData = logFC(tmpData)
+  
+  # clean out the data and remove intensity columns
+  if (!raw){
+    tmpData = tmpData[,grepl('rep|Acc', colnames(tmpData))]
+  }
   
   ## resulting data
   if (!verbose){

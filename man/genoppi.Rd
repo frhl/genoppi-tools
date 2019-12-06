@@ -39,6 +39,9 @@ genoppi(
 the genoppi combined analysis script. This will run the pipeline
 generating correlation plots,
 }
+\note{
+functions modified from Genoppi source code
+}
 \author{
 aprilkim/Yuhanshu/flassen
 }

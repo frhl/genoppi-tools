@@ -12,6 +12,7 @@ prepare(
   transform = "log2",
   normalization = "median",
   filter = "HUMAN",
+  raw = F,
   verbose = F
 )
 }
@@ -30,6 +31,8 @@ the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..}
 \item{normalization}{character. an R-command for how the data should be collumn-wise transformned.}
 
 \item{filter}{character. only accession IDs of the filter specified are included.}
+
+\item{raw}{will return the data.frame alongside the raw intensity values.}
 
 \item{verbose}{boolean. if true, returns the table and a list with updates.}
 }
