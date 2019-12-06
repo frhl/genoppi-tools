@@ -33,12 +33,10 @@ genoppi(
 \item{output_stats_file}{output file containing moderated t-test stats}
 
 \item{output_plots_file}{output file containing plots}
-
-\item{description}{the genoppi combined analysis script. This will run the pipeline
-generating correlation plots,}
 }
 \description{
-Genoppi analysis pipeline
+the genoppi combined analysis script. This will run the pipeline
+generating correlation plots,
 }
 \author{
 aprilkim/Yuhanshu/flassen

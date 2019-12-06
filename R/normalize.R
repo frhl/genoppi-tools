@@ -6,7 +6,6 @@
 #' @author flassen
 #' @export
 
-# for testthat: table <- data.frame(A=rnorm(100,5,15), B=runif(100,0,43), C = rep(c('A',"B"),50))
 
 
 normalize <- function(table = NULL, type = 'median'){

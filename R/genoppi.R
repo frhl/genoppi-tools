@@ -1,14 +1,5 @@
-# use R-3.5
-# functions modified from Genoppi source code
-
-#rm(list=ls())
-#library(limma)
-#library(ggplot2)
-#library(ggrepel)
-#library(hash)
-
 #' @title Genoppi analysis pipeline
-#' @param description the genoppi combined analysis script. This will run the pipeline
+#' @description the genoppi combined analysis script. This will run the pipeline
 #' generating correlation plots, 
 #' @param input_file Genoppi input table
 #' @param fc_cutoff character "positive", "negative", or "both"
@@ -19,6 +10,16 @@
 #' @param output_stats_file output file containing moderated t-test stats
 #' @param output_plots_file output file containing plots
 #' @author aprilkim/Yuhanshu/flassen
+
+# functions modified from Genoppi source code
+
+#rm(list=ls())
+#library(limma)
+#library(ggplot2)
+#library(ggrepel)
+#library(hash)
+
+
 
 genoppi <- function(args, input_file, fc_cutoff, fdr_cutoff, p_cutoff, bait_name, imp_list_file, 
                     gene_lists_file, output_stats_file, output_plots_file){
@@ -77,7 +78,7 @@ genoppi <- function(args, input_file, fc_cutoff, fdr_cutoff, p_cutoff, bait_name
   }
   
   # InWeb overlap enrichment (only run if bait in InWeb)
-  #data(InWeb_combined_Oct2018)
+  data(inweb_hash)
   
   if (bait_name %in% keys(inweb_hash)) {
   	inwebDf <- data.frame(gene=keys(inweb_hash))
