@@ -18,7 +18,7 @@ prepare(
 \arguments{
 \item{bait}{a vector containing that contains the bait and cell type that should be matched in a column.}
 
-\item{infile}{the file that contains the raw data, i.e. accession numbers, intensity values, ratios etc.}
+\item{infile}{the file path or data.frame that contains the raw data, i.e. accession numbers, intensity values, ratios etc.}
 
 \item{cols}{optional manual entry. A vector of columns that are present in the dataset header. Follows 
 the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..}

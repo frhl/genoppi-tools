@@ -5,20 +5,27 @@
 \title{Genoppi analysis pipeline}
 \usage{
 genoppi(
-  args,
   input_file,
-  fc_cutoff,
-  fdr_cutoff,
-  p_cutoff,
   bait_name,
-  imp_list_file,
-  gene_lists_file,
   output_stats_file,
-  output_plots_file
+  output_plots_file,
+  gene_lists_file = NA,
+  fc_cutoff = "both",
+  fdr_cutoff = 0.1,
+  p_cutoff = NA,
+  imp_list_file = NA
 )
 }
 \arguments{
 \item{input_file}{Genoppi input table}
+
+\item{bait_name}{bait name}
+
+\item{output_stats_file}{output file containing moderated t-test stats (must be a .txt file)}
+
+\item{output_plots_file}{output file containing plots (must be a .pdf file)}
+
+\item{gene_lists_file}{file containing gene list file names, or "NA"}
 
 \item{fc_cutoff}{character "positive", "negative", or "both"}
 
@@ -26,13 +33,7 @@ genoppi(
 
 \item{p_cutoff}{numeric value or "NA"}
 
-\item{bait_name}{bait name}
-
-\item{gene_lists_file}{file containing gene list file names, or "NA"}
-
-\item{output_stats_file}{output file containing moderated t-test stats}
-
-\item{output_plots_file}{output file containing plots}
+\item{imp_list_file}{file containing an overview over which proteins were imputed}
 }
 \description{
 the genoppi combined analysis script. This will run the pipeline
