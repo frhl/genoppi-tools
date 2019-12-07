@@ -8,7 +8,7 @@ prepare(
   bait,
   infile,
   cols = NULL,
-  impute = NULL,
+  impute = list(stdwidth = 0.5, shift = -0.8),
   transform = "log2",
   normalization = "median",
   filter = "HUMAN",
@@ -24,7 +24,8 @@ prepare(
 \item{cols}{optional manual entry. A vector of columns that are present in the dataset header. Follows 
 the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..}
 
-\item{impute}{how should missing data be imputed? NULL means that missing data rows are dropped.}
+\item{impute}{how should missing data be imputed? NULL means that missing data rows are dropped. Will take a list
+containing shift and stdwidth for gaussian imputation. For further details, see \code{?impute}.}
 
 \item{transform}{charcacter. an R-command for how the data should be transformed.}
 
