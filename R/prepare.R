@@ -44,6 +44,8 @@ prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2'
   # 1) transform the data and 2) median normalizeation
   tmpData = pTransform(tmpData, type = transform)
   tmpData = normalize(tmpData, type = normalization)
+  browser()
+  
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
   rowsEnoughProteins <- !(data[,info$col.unique.proteins] >= 2) 
@@ -57,6 +59,8 @@ prepare <- function(bait, infile, cols = NULL, impute = NULL, transform = 'log2'
   tmpData[,1] <- strSplitGene(tmpData[,1])
       
   # 5) impute if needed
+
+  
   tmpData = tmpData[complete.cases(tmpData),]
   info$total.rows.remove <- nrow(data) - nrow(tmpData)
   
