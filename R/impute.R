@@ -29,5 +29,14 @@ impute.gaussian <- function(df, width = 1, shift = 0){
 }
 
 
+impute.locf <- function(df){
+  
+  # two misisng values replaced by valyes of the other replicate
+  
+}
+
+
+
+
 
 
