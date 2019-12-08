@@ -34,6 +34,7 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   
   # read in GenoppiInput file: gene name followed by logFC for each replicate
   input_df <- read.table(input_file,header=T,sep="\t")
+  stopifnot(any(grepl('rep', colnames(input_df))))
   
   # calculate and output moderated t-test statistics
   out_stats <- moderatedTTest(input_df)
@@ -67,17 +68,21 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   plotVolcano(out_stats, bait_name)
   plotScatter(out_stats, bait_name)
   
-  
   # label IMPUTED genes on volcano plot
-  if (!is.na(imp_list_file)) {
-  	impDf <- read.table(imp_list_file,header=T,sep="\t")
-  	plotOverlap(out_stats,bait_name,'IMPUTED',impDf,FALSE)
-  }
+  #if (!is.na(imp_list_file)) {
+  	#impDf <- read.table(imp_list_file,header=T,sep="\t")
+  
+  
+  ## this function must be dissected
+  impDf <- out_stats
+  plotOverlap(out_stats,bait_name,'imputed',impDf,FALSE)
+  #}
   
   # InWeb overlap enrichment (only run if bait in InWeb)
   data(inweb_hash)
   
   if (bait_name %in% keys(inweb_hash)) {
+    
   	inwebDf <- data.frame(gene=keys(inweb_hash))
   	inwebDf$significant <- inwebDf$gene %in% inweb_hash[[bait_name]]
   
@@ -101,6 +106,7 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   # with gene lists overlap enrichment
   if (!is.na(gene_lists_file)) {
   	geneListTable <- read.table(gene_lists_file,header=T,sep="\t",stringsAsFactors=F)
+  	
   	# loop through each gene list
   	for (i in 1:dim(geneListTable)[1]) {
   		listDf <- read.table(geneListTable[i,2],header=T,sep="\t")

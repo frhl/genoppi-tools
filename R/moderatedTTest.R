@@ -7,18 +7,18 @@
 
 moderatedTTest <- function(df){
   
-  calculated <- df
-  colnames(calculated)[1] <- "gene"
+  
+  # isolate rep columns
+  reps <- grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric))
+  calculated <- df[, reps]
   
   # apply median normalization
-  medianNorm <- function(d){return(d - median(d, na.rm = TRUE))}
-  for (i in 2:dim(df)[2]) {
-    colStr <- paste("rep",i-1,sep="")
-    calculated[,colStr] <- medianNorm(calculated[,colStr])
-  }
+  # note: is this step needed, since intensity values
+  # have already been normalized?
+  calculated <- normalize(calculated)
   
   # calc moderated t-test
-  myfit <- lmFit(calculated[,-1], method="robust")
+  myfit <- lmFit(calculated, method="robust")
   myfit <- eBayes(myfit)
   modtest <- topTable(myfit, number=nrow(myfit), sort.by='none')
   colnames(modtest)[4:5] <- c("pvalue","FDR")
@@ -26,6 +26,8 @@ moderatedTTest <- function(df){
   # return data frame with test results: gene, rep1, rep2, ..., logFC, pvalue, FDR 
   calculated <- data.frame(cbind(calculated, modtest[,-c(2,3,6)]))
   calculated <- calculated[with(calculated, order(-logFC, FDR)),]
+  calculated <- cbind(df$gene, calculated)
+  colnames(calculated)[1] <- 'gene'
   
   return(calculated)
 }

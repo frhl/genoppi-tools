@@ -33,6 +33,8 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     info$cols.bait <- grepl(paste(bait, collapse='.*'), cnames) & (!info$cols.ratios)
     dataBait <- data[,info$cols.bait]
     dataMock <- data[,info$cols.control]
+    stopifnot(!is.null(dataBait) | !is.null(dataMock)) # should not be null
+    stopifnot(ncol(dataBait) == ncol(dataMock)) # should have same amount of columns
     dataComb <- cbind(dataBait,dataMock)
     dataComb <- dataComb[,c(1,3,2,4)] # iTRAQ duplicates only for now // numbers should be checked
     tmpData <- cbind(data[info$col.accession], dataComb)
