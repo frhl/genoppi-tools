@@ -7,8 +7,10 @@
 
 ### --------------------------------------------------
 ### gene list overlap enrichment test + volcano plot
-plotOverlap <- function(df,bait,listName,listDf,drawLabel){
+plotOverlap <- function(df,bait,listName,listDf,drawLabel, debug = F){
   
+  
+  if (debug) browser()
   # all proteins detected in experiment + in gene list (REMOVE BAIT)
   #preys <- unique(intersect(df$gene, listDf$gene))
   #preys <- unique(df$gene[df$gene %in% listDf$gene & df$gene != bait])

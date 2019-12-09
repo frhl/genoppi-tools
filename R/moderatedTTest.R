@@ -5,7 +5,7 @@
 #' @export
 
 
-moderatedTTest <- function(df){
+moderatedTTest <- function(df, keep = c('imputed')){
   
   
   # isolate rep columns
@@ -28,6 +28,14 @@ moderatedTTest <- function(df){
   calculated <- calculated[with(calculated, order(-logFC, FDR)),]
   calculated <- cbind(df$gene, calculated)
   colnames(calculated)[1] <- 'gene'
+  
+  # keep columns
+  if (!is.null(keep)){
+    stopifnot(all(keep %in% colnames(df)))
+    kept = data.frame(df[, unlist(lapply(keep, function(x) grepl(x, colnames(df))))])
+    colnames(kept) = keep
+    calculated <- cbind(calculated, kept)  
+  }  
   
   return(calculated)
 }

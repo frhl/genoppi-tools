@@ -15,12 +15,14 @@
 #' @export
 
 genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
-                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA){
+                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA, debug = F){
 
   require(limma)
   require(ggplot2)
   require(ggrepel)
   require(hash)
+  
+  if (debug) browser()
   
   #input_file <- 'GenoppiInput/BCL2.HDFNvsG401.NoImp.GenoppiInput.txt' 
   #fc_cutoff <- 'both'
@@ -74,8 +76,8 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   
   
   ## this function must be dissected
-  impDf <- out_stats
-  plotOverlap(out_stats,bait_name,'imputed',impDf,FALSE)
+  impDf <- out_statsß
+  plotOverlap(out_stats,bait_name,'imputed',impDf,FALSE, debug = T)
   #}
   
   # InWeb overlap enrichment (only run if bait in InWeb)
