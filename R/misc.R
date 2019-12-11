@@ -1,4 +1,3 @@
-
 #' @title misc tools
 #' @rdname misc
 #' @export
@@ -25,4 +24,20 @@ null.omit <- function(x) {
 #' @export
 warn <- function(msg){
   write(msg,stderr())
+}
+
+#' @title make genoppi directories
+#' @description Makes a directory according to bait, cell, imputation
+#' @return will create a directory based on relative paths and return
+#' a list of file names to be used for writing.
+#' @export
+mkdir <- function(bait, cell, impute){
+  
+  cur.time <- toupper(format(Sys.time(), "%d%b%Y"))
+  newdir <- paste0(c('derived/',bait,'_', cell), collapse = '')
+  output <- paste0(c(bait,'_', cell,'_IMPUTE=',impute,'_', cur.time), collapse = '')
+  newfile <- file.path(newdir, output)
+  dir.create(newdir)
+  
+  return(list(dir=newdir, output = output, basename = newfile))
 }

@@ -7,7 +7,7 @@ test_that('imputation simulating low abundant proteins',{
   df <- data.frame(A=rnorm(10000, 0, sd = 4), B = rnorm(10000, 1, sd = 3))
   sam <- sample(1:10000, 1000)
   df[sam, 1] <- NA
-  df <- impute.gaussian(df, width = 0.5, shift = -1.8)
+  df <- impute.gaussian(df, width = 0.3, shift = -1.8)
   x1 <- hist(df[df$imputed==1, ]$A, 100, xlim = c(-15, 15))
   x2 <- hist(df[df$imputed==0, ]$A, 100, xlim = c(-15, 15))
   

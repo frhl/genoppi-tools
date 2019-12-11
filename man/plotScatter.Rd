@@ -4,7 +4,7 @@
 \alias{plotScatter}
 \title{Draw Replicate Scatter Plot}
 \usage{
-plotScatter(df, bait)
+plotScatter(df, bait, title = "")
 }
 \arguments{
 \item{df}{something}
@@ -15,5 +15,5 @@ plotScatter(df, bait)
 Draws replicate correlation scatter plot(s)
 }
 \author{
-April Kim
+April Kim / Frederik Heymann
 }

@@ -4,7 +4,13 @@
 \alias{plotVolcano}
 \title{plot volcano}
 \usage{
-plotVolcano(df, bait)
+plotVolcano(
+  df,
+  bait,
+  title = "",
+  sub1 = "proteins detected.",
+  sub2 = "significant."
+)
 }
 \arguments{
 \item{df}{something here}

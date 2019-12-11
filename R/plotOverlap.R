@@ -7,8 +7,56 @@
 
 ### --------------------------------------------------
 ### gene list overlap enrichment test + volcano plot
-plotOverlap <- function(df,bait,listName,listDf,drawLabel, debug = F){
+plotOverlap <- function(df, bait, reference, title, drawLabel = T){
   
+  # generate statistics for enrichement
+  statistics <- genoppi.enrichment(df, bait, reference)
+  
+  # start volcano plot
+  p <- ggplot(df, aes(x=logFC, y=-log10(pvalue))) +
+    geom_hline(yintercept=0, color="grey") + geom_vline(xintercept=0, color="grey") +
+    xlab(bquote(log[2]*"(Fold change)")) + ylab(bquote(-log[10]*"("*italic(.("P"))*"-value)")) +
+    
+    # plot all proteins (green = significant, blue = not significant)
+    geom_point(alpha=0.5, size=1.5, color=ifelse(df$significant, "springgreen3", "royalblue2")) +
+    
+    # label bait (red = signficant, orange = not significant)
+    geom_point(subset(df, gene==bait & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="red") + 
+    geom_point(subset(df, gene==bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
+    
+    # label sig genes in gene list (yellow = significant, white = not significant)
+    geom_point(subset(df, gene %in% statistics$sigGenes & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="yellow") +
+    geom_point(subset(df, gene %in% statistics$sigGenes & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="white") +
+    
+    geom_point(subset(df, gene==bait | gene %in% statistics$sigGenes), mapping=aes(x=logFC, y=-log10(pvalue)),
+               size=2, color="black", shape=1) +
+    
+    # title (with statistics$fisherP) and theme
+    labs(title = title,
+         subtitle = paste(length(statistics$sigGenes)," detected. ",length(statistics$overlap),
+                       " significant. p-value = ", format(statistics$fisherP,digits=3),sep="")) + 
+    
+    #ggtitle( +
+    theme_bw() + theme(axis.line=element_line(color="grey"), plot.title=element_text(size=10)) + ggstamp()
+  
+  
+  ### only draw text labels for gene list genes if drawLabel==TRUE
+  if (drawLabel==TRUE) {
+    p <- p + geom_text_repel(subset(df, gene==bait | gene %in% statistics$sigGenes), mapping=aes(label=gene),
+                             arrow=arrow(length=unit(0.015, 'npc')), box.padding=unit(0.15, "lines"),
+                             point.padding=unit(0.2, "lines"), color="black", size=3)
+  } else {
+    p <- p + geom_text_repel(subset(df, gene==bait), mapping=aes(label=gene),
+                             arrow=arrow(length=unit(0.015, 'npc')), box.padding=unit(0.15, "lines"),
+                             point.padding=unit(0.2, "lines"), color="black", size=3)
+  }
+  
+  print(p)
+}
+
+
+
+plotOverlap.old <- function(df,bait,listName,listDf,drawLabel, debug = F){
   
   if (debug) browser()
   # all proteins detected in experiment + in gene list (REMOVE BAIT)
@@ -18,6 +66,7 @@ plotOverlap <- function(df,bait,listName,listDf,drawLabel, debug = F){
   
   # significant preys
   sigPreys <- unique(df$gene[df$significant & df$gene %in% preys])		
+  
   # significant genes in gene list, limited to detected preys
   sigGenes <- listDf$gene[listDf$significant & listDf$gene %in% preys]
   

@@ -31,6 +31,8 @@ Collate:
     'geneTable.R'
     'genesData.R'
     'genoppi.R'
+    'genoppiMeta.R'
+    'ggstamp.R'
     'impute.R'
     'inwebData.R'
     'localization.R'

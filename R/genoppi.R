@@ -14,8 +14,10 @@
 #' @note functions modified from Genoppi source code
 #' @export
 
+
 genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
-                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA, debug = F){
+                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA, verbose = T, 
+                    aggregate_info = T, debug = F){
 
   require(limma)
   require(ggplot2)
@@ -24,25 +26,19 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   
   if (debug) browser()
   
-  #input_file <- 'GenoppiInput/BCL2.HDFNvsG401.NoImp.GenoppiInput.txt' 
-  #fc_cutoff <- 'both'
-  #p_cutoff <- 'NA'
-  #fdr_cutoff <- 0.1
-  #bait_name <- 'BCL2'
-  #imp_list_file <- 'NA'
-  #gene_lists_file <- 'test.GenoppiIP.genelists.txt'
-  #output_stats_file <- 'test.BCL2_HDFNvsG401.GenoppiOutput.txt'
-  #output_plots_file <- 'test.BCL2_HDFNvsG401.GenoppiPlots.pdf'
+  # initial checks
+  stopifnot(length(bait_name) == 1)
   
   # read in GenoppiInput file: gene name followed by logFC for each replicate
+
   input_df <- read.table(input_file,header=T,sep="\t")
   stopifnot(any(grepl('rep', colnames(input_df))))
   
   # calculate and output moderated t-test statistics
-  out_stats <- moderatedTTest(input_df)
+  out_stats <- genoppi.ttest(input_df, keep = c('imputed'))
   write.table(out_stats,file=output_stats_file,row.names=F,sep="\t",quote=F)
   
-  # define signifcant proteins
+  # define significant proteins
   out_stats$significant <- TRUE # fc_cutoff=="both"
   if (fc_cutoff=="positive") { 
   	out_stats$significant <- out_stats$logFC > 0
@@ -52,17 +48,32 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   significant_pos <- out_stats$logFC > 0
   significant_neg <- out_stats$logFC < 0
   
+  #browser()
+  
+  ## check whether any preys are significant by p_value
   if (!is.na(p_cutoff)) {
   	p_cutoff <- as.numeric(p_cutoff)
   	out_stats$significant <- out_stats$significant & out_stats$pvalue < p_cutoff
   	significant_pos <- significant_pos & out_stats$pvalue < p_cutoff
   	significant_neg <- significant_neg & out_stats$pvalue < p_cutoff
+  	if (verbose){
+  	  p_cutoff_n_targets = length(out_stats$significant)
+  	  p_cutoff_n_sig = sum(as.numeric(out_stats$significant))
+  	  write(paste('[PVAL]:', p_cutoff_n_sig, 'of', p_cutoff_n_targets,'target(s) are significant with P-value <', p_cutoff),stdout()) 
+  	}
   }
+
+  ## check whether any preys are significant by FDR
   if (!is.na(fdr_cutoff)) {
   	fdr_cutoff <- as.numeric(fdr_cutoff)
   	out_stats$significant <- out_stats$significant & out_stats$FDR < fdr_cutoff
   	significant_pos <- significant_pos & out_stats$FDR < fdr_cutoff
-  	significant_neg <- significant_neg & out_stats$FDR < fdr_cutoff	
+  	significant_neg <- significant_neg & out_stats$FDR < fdr_cutoff
+  	if (verbose) {
+  	  fdr_cutoff_n_targets = length(out_stats$significant)
+  	  fdr_cutoff_n_sig = sum(as.numeric(out_stats$significant))
+  	  write(paste('[FDR]:', fdr_cutoff_n_sig, 'of', fdr_cutoff_n_targets,'target(s) are significant with FDR <', fdr_cutoff),stdout())
+  	}
   }
   
   # generate plots and run enrichment tests
@@ -76,20 +87,23 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   
   
   ## this function must be dissected
-  impDf <- out_statsß
-  plotOverlap(out_stats,bait_name,'imputed',impDf,FALSE, debug = T)
-  #}
+  #browser()
+  impDf <- out_stats[out_stats$impute == TRUE, ]
+  plotOverlap(out_stats, bait_name, 'imputed' ,impDf ,TRUE, debug = F)
+  if (verbose) write(paste('[IMPUTE]:', nrow(impDf), 'of', nrow(out_stats),'target(s) are significant and imputed.'),stdout()) 
+  
   
   # InWeb overlap enrichment (only run if bait in InWeb)
   data(inweb_hash)
   
   if (bait_name %in% keys(inweb_hash)) {
+    #browser()
     
   	inwebDf <- data.frame(gene=keys(inweb_hash))
   	inwebDf$significant <- inwebDf$gene %in% inweb_hash[[bait_name]]
   
   	# significance direction "both"
-  	plotOverlap(out_stats,bait_name,'InWeb',inwebDf,TRUE)
+  	plotOverlap(out_stats,bait_name,'InWeb',inwebDf,TRUE, debug = F)
   	plotOverlap(out_stats,bait_name,'InWeb',inwebDf,FALSE)
   
   	# significance direction "positive"
@@ -121,9 +135,16 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   		# significance direction "negative"
   		temp_stats$significant <- significant_neg
   		plotOverlap(temp_stats,bait_name,paste(geneListTable[i,1],', -',sep=''),listDf,TRUE)
-  	
   	}
   }
   
   graphics.off()
+  
 }
+
+
+
+  
+
+
+

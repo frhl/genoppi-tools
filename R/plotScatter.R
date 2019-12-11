@@ -2,16 +2,21 @@
 #' @description Draws replicate correlation scatter plot(s)
 #' @param df something
 #' @param bait something
-#' @author April Kim
+#' @author April Kim / Frederik Heymann
 #' @export
 
 
 ### --------------------------------------------------
 ### replicate correlation scatter plot(s)
-plotScatter <- function(df, bait){
+plotScatter <- function(df, bait, title = ''){
   
   # iterate through each pair of replicates
-  nRep <- dim(df)[2] - 5 # minus gene, logFC, pvalue, FDR, significant columns
+  #browser()
+
+  #nRep <- dim(df)[2] - 5 # minus gene, logFC, pvalue, FDR, significant columns
+  colRep <- as.vector(grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric)))
+  nRep <- sum(as.numeric(colRep))
+  
   for (i in 1:(nRep-1)) {
     for (j in (i+1):nRep) {
       
@@ -39,11 +44,12 @@ plotScatter <- function(df, bait){
         
         # identity line, title (with correlation), theme
         geom_abline(intercept=0, slope=1, linetype="longdash", size=0.2) +
-        ggtitle(paste("correlation:",format(r,digits=3))) + xlab(col1) + ylab(col2) +
-        theme_bw() + theme(axis.line=element_line(color="grey"))
+        labs(title = title, subtitle = paste("correlation:",format(r,digits=3))) + xlab(col1) + ylab(col2) +
+        theme_bw() + theme(axis.line=element_line(color="grey")) + ggstamp()
       
       print(p)
       
     }
   }
+  return(list(r=r))
 }

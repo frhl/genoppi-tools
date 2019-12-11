@@ -4,7 +4,7 @@
 \alias{plotOverlap}
 \title{Draw Overlap Plot}
 \usage{
-plotOverlap(df, bait, listName, listDf, drawLabel)
+plotOverlap(df, bait, reference, title, drawLabel = T)
 }
 \arguments{
 \item{df}{something}

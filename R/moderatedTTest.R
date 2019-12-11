@@ -1,12 +1,17 @@
 #' @title Calculate a moderated t-test
 #' @description alculate a moderated t-test
 #' @param df a data.frame with 'rep' in column names.
-#' @author April Kim
+#' @param keep a vector of characters containing colnames that should be kept in the data.frame
+#' @author April Kim Frederik Heymann
 #' @export
+ 
 
-
-moderatedTTest <- function(df, keep = c('imputed')){
+genoppi.ttest <- function(df, keep = c('imputed')){
   
+  require(limma)
+  
+  # check input
+  stopifnot('gene' %in% colnames(df))
   
   # isolate rep columns
   reps <- grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric))
@@ -15,7 +20,7 @@ moderatedTTest <- function(df, keep = c('imputed')){
   # apply median normalization
   # note: is this step needed, since intensity values
   # have already been normalized?
-  calculated <- normalize(calculated)
+  # calculated <- normalize(calculated) # <---- DISCUSS WITH APRIL
   
   # calc moderated t-test
   myfit <- lmFit(calculated, method="robust")

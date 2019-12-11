@@ -13,7 +13,10 @@ genoppi(
   fc_cutoff = "both",
   fdr_cutoff = 0.1,
   p_cutoff = NA,
-  imp_list_file = NA
+  imp_list_file = NA,
+  verbose = T,
+  aggregate_info = T,
+  debug = F
 )
 }
 \arguments{

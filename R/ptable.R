@@ -5,7 +5,11 @@
 
 
 
-ptable <- function(df){
+ptable <- function(lst){
+  s
+  
+  
+  
   
   # generate a table of the following by cell type :
   # proteins identified
@@ -17,6 +21,5 @@ ptable <- function(df){
   # known InWeb interactors of BCAS3
   # InWeb KCNK5 interactors identified in the IP
   
-  
-  
+
 }

@@ -2,12 +2,12 @@
 #' @description Volcano plot
 #' @param df something here
 #' @author April Kim
+#' @examples
 #' @export
 
 
-### --------------------------------------------------
-### volcano plot (with bait label)
-plotVolcano <- function(df, bait){
+
+plotVolcano <- function(df, bait, title = '', sub1 = 'proteins detected.', sub2 ='significant.'){
   
   nTotal <- dim(df)[1]
   nSig <- sum(df$significant==TRUE)
@@ -28,8 +28,8 @@ plotVolcano <- function(df, bait){
                     box.padding=unit(0.15, "lines"), point.padding=unit(0.2, "lines"), color="black", size=3) +
     
     # title (with significant count) and theme
-    ggtitle(paste(nTotal,"proteins detected,",nSig,"significant")) +
-    theme_bw() + theme(axis.line=element_line(color="grey"))
+    labs(title = title, subtitle = paste(nTotal,sub1,nSig,sub2)) +
+    theme_bw() + theme(axis.line=element_line(color="grey")) + ggstamp()
   
   print(p)
 }
