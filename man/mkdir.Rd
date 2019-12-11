@@ -4,7 +4,14 @@
 \alias{mkdir}
 \title{make genoppi directories}
 \usage{
-mkdir(bait, cell, impute)
+mkdir(bait, cell, variation = "")
+}
+\arguments{
+\item{bait}{what bait was used?}
+
+\item{cell}{what cell type?}
+
+\item{variation}{add a variation to the outputted name}
 }
 \value{
 will create a directory based on relative paths and return

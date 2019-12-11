@@ -30,16 +30,22 @@ warn <- function(msg){
 
 #' @title make genoppi directories
 #' @description Makes a directory according to bait, cell, imputation
+#' @param bait what bait was used?
+#' @param cell what cell type?
+#' @param variation add a variation to the outputted name
 #' @return will create a directory based on relative paths and return
 #' a list of file names to be used for writing.
 #' @export
-mkdir <- function(bait, cell, impute){
+mkdir <- function(bait, cell, variation = ""){
   
   cur.time <- toupper(format(Sys.time(), "%d%b%Y"))
   newdir <- paste0(c('derived/',bait,'_', cell), collapse = '')
-  output <- paste0(c(bait,'_', cell,'_IMPUTE=',impute,'_', cur.time), collapse = '')
+  output <- paste0(c(bait,'_', cell,'_',variation, cur.time), collapse = '')
   newfile <- file.path(newdir, output)
+  pdfpath <- paste0(newfile, '.pdf')
+  txtpath <- paste0(newfile, '.txt')
+  csvpath <- paste0(newfile, '.csv')
   dir.create(newdir)
   
-  return(list(dir=newdir, output = output, basename = newfile))
+  return(list(dir=newdir, output = output, basename = newfile, ))
 }
