@@ -18,6 +18,17 @@ plotVolcano(
 \description{
 Volcano plot
 }
+\seealso{
+Other genoppi: 
+\code{\link{designate}()},
+\code{\link{enrichment}()},
+\code{\link{genoppi.database}()},
+\code{\link{genoppi}()},
+\code{\link{mttest}()},
+\code{\link{plotOverlap}()},
+\code{\link{plotScatter}()}
+}
 \author{
 April Kim
 }
+\concept{genoppi}

@@ -14,3 +14,14 @@ genoppi.database(bait, reference = "inweb")
 \description{
 Genoppi databases
 }
+\seealso{
+Other genoppi: 
+\code{\link{designate}()},
+\code{\link{enrichment}()},
+\code{\link{genoppi}()},
+\code{\link{mttest}()},
+\code{\link{plotOverlap}()},
+\code{\link{plotScatter}()},
+\code{\link{plotVolcano}()}
+}
+\concept{genoppi}

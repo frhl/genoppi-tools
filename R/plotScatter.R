@@ -3,6 +3,7 @@
 #' @param df something
 #' @param bait something
 #' @author April Kim / Frederik Heymann
+#' @family genoppi
 #' @export
 
 

@@ -45,6 +45,17 @@ generating correlation plots,
 \note{
 functions modified from Genoppi source code
 }
+\seealso{
+Other genoppi: 
+\code{\link{designate}()},
+\code{\link{enrichment}()},
+\code{\link{genoppi.database}()},
+\code{\link{mttest}()},
+\code{\link{plotOverlap}()},
+\code{\link{plotScatter}()},
+\code{\link{plotVolcano}()}
+}
 \author{
 aprilkim/Yuhanshu/flassen
 }
+\concept{genoppi}

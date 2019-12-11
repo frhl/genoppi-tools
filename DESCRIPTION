@@ -28,6 +28,7 @@ Encoding: UTF-8
 RoxygenNote: 7.0.2
 Collate: 
     'describe.R'
+    'designate.R'
     'geneTable.R'
     'genesData.R'
     'genoppi.R'
@@ -38,7 +39,7 @@ Collate:
     'localization.R'
     'logFC.R'
     'misc.R'
-    'moderatedTTest.R'
+    'mttest.R'
     'normalize.R'
     'plotOverlap.R'
     'plotScatter.R'

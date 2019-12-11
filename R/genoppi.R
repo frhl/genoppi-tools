@@ -12,6 +12,7 @@
 #' @param output_plots_file output file containing plots (must be a .pdf file)
 #' @author aprilkim/Yuhanshu/flassen
 #' @note functions modified from Genoppi source code
+#' @family genoppi
 #' @export
 
 

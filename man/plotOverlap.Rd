@@ -12,6 +12,17 @@ plotOverlap(df, bait, reference, title, drawLabel = T)
 \description{
 ne list overlap enrichment test + volcano plot
 }
+\seealso{
+Other genoppi: 
+\code{\link{designate}()},
+\code{\link{enrichment}()},
+\code{\link{genoppi.database}()},
+\code{\link{genoppi}()},
+\code{\link{mttest}()},
+\code{\link{plotScatter}()},
+\code{\link{plotVolcano}()}
+}
 \author{
 April Kim
 }
+\concept{genoppi}

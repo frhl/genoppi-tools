@@ -2,8 +2,8 @@
 #' @description Designate observations as significant based on filtering them using dplyr::filter.
 #' @author frhl
 #' @examples \dontrun{
-#' data = df %>% genoppi.ttest()
-#' data %>% designate(FDR < 0.1, pvalue < 0.05)}
+#' data = df %>% genoppi.ttest() ∂%>% designate(FDR < 0.1, pvalue < 0.05)}
+#' @family genoppi
 #' @export
 
 designate <- function(data, ...){

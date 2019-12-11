@@ -1,12 +1,14 @@
 #' @title Calculate a moderated t-test
-#' @description alculate a moderated t-test
+#' @description Will do a moderated t.test pairwise on replicate columns, and
+#' calculate the FDR and p-value.
 #' @param df a data.frame with 'rep' in column names.
 #' @param keep a vector of characters containing colnames that should be kept in the data.frame
-#' @author April Kim Frederik Heymann
+#' @author April Kim / Frederik Heymann
+#' @family genoppi
 #' @export
  
 
-genoppi.ttest <- function(df, keep = c('imputed')){
+mttest <- function(df, keep = c('imputed')){
   
   require(limma)
   
@@ -18,8 +20,6 @@ genoppi.ttest <- function(df, keep = c('imputed')){
   calculated <- df[, reps]
   
   # apply median normalization
-  # note: is this step needed, since intensity values
-  # have already been normalized?
   # calculated <- normalize(calculated) # <---- DISCUSS WITH APRIL
   
   # calc moderated t-test

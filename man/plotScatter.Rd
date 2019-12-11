@@ -14,6 +14,17 @@ plotScatter(df, bait, title = "")
 \description{
 Draws replicate correlation scatter plot(s)
 }
+\seealso{
+Other genoppi: 
+\code{\link{designate}()},
+\code{\link{enrichment}()},
+\code{\link{genoppi.database}()},
+\code{\link{genoppi}()},
+\code{\link{mttest}()},
+\code{\link{plotOverlap}()},
+\code{\link{plotVolcano}()}
+}
 \author{
 April Kim / Frederik Heymann
 }
+\concept{genoppi}

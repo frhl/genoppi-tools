@@ -2,7 +2,7 @@
 #' @description Volcano plot
 #' @param df something here
 #' @author April Kim
-#' @examples
+#' @family genoppi
 #' @export
 
 

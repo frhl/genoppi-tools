@@ -1,10 +1,13 @@
 #' @title Calculate enrichment using Fisher exact test
-#' @description 
+#' @description Calculate enrichment of a data and reference data base for
+#' a specific bait and its interactors. Will do p-test using a fisher exact test
+#' based on the overlap between the main data and the reference data which both
+#' interacts with bait.
 #' @param data data.frame containing columns gene and significance
 #' @param bait designated bait in the data.
 #' @param reference data base reference
 #' @family genoppi
-#' 
+#' @export
 
 
 enrichment <- function(data, bait, reference){
