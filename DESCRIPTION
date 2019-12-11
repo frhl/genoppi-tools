@@ -1,6 +1,6 @@
 Package: pRroteomics
 Title: Proteomics analysis using R
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: 
     c(person(given = "Frederik",
              family = "Lassen",
@@ -13,7 +13,7 @@ LazyData: true
 Depends:
     R (>= 3.6.1)
 Suggests:
-    dplyr
+    devtools
 Imports:
     assertthat,
     utils,
@@ -23,6 +23,7 @@ Imports:
     hash,
     ggplot2,
     ggrepel,
+    dplyr,
     limma
 Encoding: UTF-8
 RoxygenNote: 7.0.2

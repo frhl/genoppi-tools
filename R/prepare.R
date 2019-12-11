@@ -12,6 +12,7 @@
 #' @param filter character. only accession IDs of the filter specified are included.
 #' @param raw will return the data.frame alongside the raw intensity values.
 #' @param verbose boolean. if true, returns the table and a list with updates.
+#' @export
 #' @return a table that can be inputted to genoppi
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 

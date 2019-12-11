@@ -8,7 +8,10 @@
 
 ### --------------------------------------------------
 ### gene list overlap enrichment test + volcano plot
-plotOverlap <- function(df, bait, reference, title, drawLabel = T){
+plotOverlap <- function(df, bait, reference, title = '', drawLabel = T){
+  
+  require(ggplot2)
+  require(ggrepel)
   
   # generate statistics for enrichement
   statistics <- enrichment(df, bait, reference)

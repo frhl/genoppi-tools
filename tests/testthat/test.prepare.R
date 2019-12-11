@@ -1,7 +1,14 @@
 # Install the released version from CRAN
 
-.libPaths(c("~/Toolbox/rlib/",.libPaths()))
-devtools::load_all()
+
+if (F){
+  ## manual testing
+  setwd('~/Toolbox/packages/pRoteomics/')
+  .libPaths(c("~/Toolbox/rlib/",.libPaths()))
+  devtools::load_all()
+  
+}
+
 
 test_that('that this output matches something we have generated before',{
   

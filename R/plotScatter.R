@@ -14,6 +14,9 @@ plotScatter <- function(df, bait, title = ''){
   colRep <- as.vector(grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric)))
   nRep <- sum(as.numeric(colRep))
   
+  require(ggplot2)
+  require(ggrepel)
+  
   for (i in 1:(nRep-1)) {
     for (j in (i+1):nRep) {
       

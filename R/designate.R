@@ -10,6 +10,8 @@
 
 designate <- function(data, ...){
   
+  require(dplyr)
+  
   # check data.format
   cnames <- colnames(data)
   stopifnot('logFC' %in% cnames)

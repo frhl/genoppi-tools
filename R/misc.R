@@ -47,5 +47,5 @@ mkdir <- function(bait, cell, variation = ""){
   csvpath <- paste0(newfile, '.csv')
   dir.create(newdir)
   
-  return(list(dir=newdir, output = output, basename = newfile, ))
+  return(list(dir=newdir, output = output, basename = newfile, pdfpath = pdfpath, txtpath = txtpath, csvpath = csvpath))
 }

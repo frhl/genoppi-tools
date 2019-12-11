@@ -13,11 +13,14 @@
 
 plotVolcano <- function(df, bait, title = '', sub1 = 'proteins detected.', sub2 ='significant.'){
   
+  require(ggplot2)
+  require(ggrepel)
+  
   nTotal <- dim(df)[1]
   nSig <- sum(df$significant==TRUE)
   
   ## inital check
-  stopifnot(all('logFC', 'pvalue', 'significant' %in% colnames(df)))
+  if (!all(c('logFC', 'pvalue', 'significant') %in% colnames(df))) stop('data.frame does not contain some of logFC, pvalue and signifcant.')
   
   # start volcano plot
   p <- ggplot(df, aes(x = logFC, y = -log10(pvalue))) +
