@@ -16,8 +16,8 @@ ne list overlap enrichment test + volcano plot
 Other genoppi: 
 \code{\link{designate}()},
 \code{\link{enrichment}()},
-\code{\link{genoppi.database}()},
 \code{\link{genoppi}()},
+\code{\link{interactors}()},
 \code{\link{mttest}()},
 \code{\link{plotScatter}()},
 \code{\link{plotVolcano}()}

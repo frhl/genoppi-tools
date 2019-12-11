@@ -21,8 +21,8 @@ data = df \%>\% genoppi.ttest() ∂\%>\% designate(FDR < 0.1, pvalue < 0.05)}
 \seealso{
 Other genoppi: 
 \code{\link{enrichment}()},
-\code{\link{genoppi.database}()},
 \code{\link{genoppi}()},
+\code{\link{interactors}()},
 \code{\link{mttest}()},
 \code{\link{plotOverlap}()},
 \code{\link{plotScatter}()},

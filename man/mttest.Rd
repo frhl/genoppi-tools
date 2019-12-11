@@ -19,8 +19,8 @@ calculate the FDR and p-value.
 Other genoppi: 
 \code{\link{designate}()},
 \code{\link{enrichment}()},
-\code{\link{genoppi.database}()},
 \code{\link{genoppi}()},
+\code{\link{interactors}()},
 \code{\link{plotOverlap}()},
 \code{\link{plotScatter}()},
 \code{\link{plotVolcano}()}

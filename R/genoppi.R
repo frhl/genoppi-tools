@@ -13,7 +13,6 @@
 #' @author aprilkim/Yuhanshu/flassen
 #' @note functions modified from Genoppi source code
 #' @family genoppi
-#' @export
 
 
 genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
