@@ -4,7 +4,7 @@
 \alias{impute.gaussian}
 \title{Impute values}
 \usage{
-impute.gaussian(df, width = 1, shift = 0)
+impute.gaussian(df, width = 0.3, shift = -1.8)
 }
 \arguments{
 \item{df}{a data.frame with numeric columns}
@@ -21,7 +21,8 @@ Replacing missing values with randomly sampled values from normal distribution,
 with width SD x width and down-shifted Median-Sd x shift compared to observed sample distribution.
 This is building upon the assumption that missing values have arisen due to low expression that 
 can't be quantified. Therfore, shifting the median to lower expression levels will provide a 
-proxy of this.
+proxy of this. In contrast to, locf imputation, this ensures that the variance is not reduced
+which would consequently impact the moderated t.test.
 }
 \note{
 No down-shifting and stdwith of 0.5 do not simualte low abudant missing values.

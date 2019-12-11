@@ -6,6 +6,18 @@
 \usage{
 ggstamp(msg = "", col = "black", alpha = 0.9, size = 2)
 }
+\arguments{
+\item{msg}{should there be a message before the date?}
+
+\item{col}{color of the stamp.}
+
+\item{alpha}{transparency}
+
+\item{size}{size of the text}
+}
 \description{
-Stamp a ggplot
+Will stamp a ggplot in the lower right hand corner with the current time and date.
+}
+\author{
+Frederik
 }

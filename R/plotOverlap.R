@@ -11,7 +11,7 @@
 plotOverlap <- function(df, bait, reference, title, drawLabel = T){
   
   # generate statistics for enrichement
-  statistics <- genoppi.enrichment(df, bait, reference)
+  statistics <- enrichment(df, bait, reference)
   
   # start volcano plot
   p <- ggplot(df, aes(x=logFC, y=-log10(pvalue))) +

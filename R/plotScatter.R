@@ -1,26 +1,23 @@
-#' @title Draw Replicate Scatter Plot
+#' @title Draw a scatter plot of replicates
 #' @description Draws replicate correlation scatter plot(s)
-#' @param df something
-#' @param bait something
+#' @param df A data.frame containing replicate columns.
+#' @param bait The bait that was used. A string.
+#' @param title Add a title to the ggplot.
 #' @author April Kim / Frederik Heymann
 #' @family genoppi
 #' @export
 
-
-### --------------------------------------------------
-### replicate correlation scatter plot(s)
 plotScatter <- function(df, bait, title = ''){
   
-  # iterate through each pair of replicates
-  #browser()
-
-  #nRep <- dim(df)[2] - 5 # minus gene, logFC, pvalue, FDR, significant columns
+  # inital checks of input
+  stopifnot(any(grepl('rep', colnames(df))))
   colRep <- as.vector(grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric)))
   nRep <- sum(as.numeric(colRep))
   
   for (i in 1:(nRep-1)) {
     for (j in (i+1):nRep) {
       
+      # set columns of replicates
       col1 <- paste("rep",i,sep="")
       col2 <- paste("rep",j,sep="")
       r <- cor(df[,col1],df[,col2]) # Pearson correlation
@@ -33,12 +30,9 @@ plotScatter <- function(df, bait, title = ''){
         geom_point(alpha=0.5, size=1.5, color=ifelse(df$significant, "springgreen3", "royalblue2")) +
         
         # label bait (red = signficant, orange = not significant)
-        geom_point(subset(temp_df, gene==bait & significant), mapping=aes(x=temp_rep1, y=temp_rep2),
-                   size=2, color="red") + 
-        geom_point(subset(temp_df, gene==bait & !significant), mapping=aes(x=temp_rep1, y=temp_rep2),
-                   size=2, color="orange") +
-        geom_point(subset(temp_df, gene==bait), mapping=aes(x=temp_rep1, y=temp_rep2),
-                   size=2, color="black", shape=1) +	
+        geom_point(subset(temp_df, gene==bait & significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=2, color="red") + 
+        geom_point(subset(temp_df, gene==bait & !significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=2, color="orange") +
+        geom_point(subset(temp_df, gene==bait), mapping=aes(x=temp_rep1, y=temp_rep2), size=2, color="black", shape=1) +	
         geom_text_repel(subset(temp_df, gene==bait), mapping=aes(label=gene),
                         arrow=arrow(length=unit(0.015, 'npc')), box.padding=unit(0.15, "lines"),
                         point.padding=unit(0.2, "lines"), color="black", size=3) +

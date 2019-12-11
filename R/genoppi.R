@@ -1,6 +1,6 @@
 #' @title Genoppi analysis pipeline
 #' @description the genoppi combined analysis script. This will run the pipeline
-#' generating correlation plots, 
+#' generating correlation plots which has been written by Yu-Han and April.
 #' @param input_file Genoppi input table
 #' @param fc_cutoff character "positive", "negative", or "both"
 #' @param p_cutoff numeric value or "NA"
@@ -17,8 +17,7 @@
 
 
 genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file, gene_lists_file = NA,
-                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA, verbose = T, 
-                    aggregate_info = T, debug = F){
+                    fc_cutoff = 'both', fdr_cutoff = 0.1, p_cutoff = NA, imp_list_file = NA, verbose = T){
 
   require(limma)
   require(ggplot2)

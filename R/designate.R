@@ -1,5 +1,7 @@
 #' @title Designate significant observations
 #' @description Designate observations as significant based on filtering them using dplyr::filter.
+#' @param data a data.frame
+#' @param ... any arguments that can be inputted into dplyr::filter.
 #' @author frhl
 #' @examples \dontrun{
 #' data = df %>% genoppi.ttest() ∂%>% designate(FDR < 0.1, pvalue < 0.05)}

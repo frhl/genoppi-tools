@@ -2,7 +2,8 @@
 #' @rdname misc
 #' @export
 
-#' @description length of unique
+#' @description length of unique items.
+#' @param x a vector or list of items.
 #' @export
 lun <- function(x) length(unique(as.vector(x)))
 
@@ -21,6 +22,7 @@ null.omit <- function(x) {
 
 #' @title warnings to stderr
 #' @description sends a message to stderr
+#' @param msg the message.
 #' @export
 warn <- function(msg){
   write(msg,stderr())

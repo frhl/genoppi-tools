@@ -6,6 +6,9 @@
 \usage{
 lun(x)
 }
+\arguments{
+\item{x}{a vector or list of items.}
+}
 \description{
-length of unique
+length of unique items.
 }

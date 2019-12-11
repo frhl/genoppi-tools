@@ -13,7 +13,15 @@ plotVolcano(
 )
 }
 \arguments{
-\item{df}{something here}
+\item{df}{a data.frame containing columns logFC, significant and p-value.}
+
+\item{bait}{what bait was used?  a string.}
+
+\item{title}{should the ggplot ahve a title?}
+
+\item{sub1}{The first part of a subtitle that is to be generated.}
+
+\item{sub2}{The second part of the subtitle.}
 }
 \description{
 Volcano plot

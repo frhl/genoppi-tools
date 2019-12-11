@@ -1,6 +1,10 @@
 #' @title plot volcano
 #' @description Volcano plot
-#' @param df something here
+#' @param df a data.frame containing columns logFC, significant and p-value.
+#' @param bait what bait was used?  a string.
+#' @param title should the ggplot ahve a title?
+#' @param sub1 The first part of a subtitle that is to be generated.
+#' @param sub2 The second part of the subtitle.
 #' @author April Kim
 #' @family genoppi
 #' @export
@@ -11,6 +15,9 @@ plotVolcano <- function(df, bait, title = '', sub1 = 'proteins detected.', sub2 
   
   nTotal <- dim(df)[1]
   nSig <- sum(df$significant==TRUE)
+  
+  ## inital check
+  stopifnot(all('logFC', 'pvalue', 'significant' %in% colnames(df)))
   
   # start volcano plot
   p <- ggplot(df, aes(x = logFC, y = -log10(pvalue))) +

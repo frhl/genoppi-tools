@@ -2,14 +2,16 @@
 % Please edit documentation in R/plotScatter.R
 \name{plotScatter}
 \alias{plotScatter}
-\title{Draw Replicate Scatter Plot}
+\title{Draw a scatter plot of replicates}
 \usage{
 plotScatter(df, bait, title = "")
 }
 \arguments{
-\item{df}{something}
+\item{df}{A data.frame containing replicate columns.}
 
-\item{bait}{something}
+\item{bait}{The bait that was used. A string.}
+
+\item{title}{Add a title to the ggplot.}
 }
 \description{
 Draws replicate correlation scatter plot(s)

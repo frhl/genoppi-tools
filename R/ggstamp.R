@@ -1,6 +1,11 @@
 #' @title Stamp a ggplot
-#' 
-
+#' @description Will stamp a ggplot in the lower right hand corner with the current time and date.
+#' @param msg should there be a message before the date?
+#' @param col color of the stamp.
+#' @param alpha transparency
+#' @param size size of the text
+#' @export
+#' @author Frederik
 
 ggstamp <- function(msg = '', col = 'black', alpha = 0.9, size = 2){
   

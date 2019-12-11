@@ -6,6 +6,11 @@
 \usage{
 designate(data, ...)
 }
+\arguments{
+\item{data}{a data.frame}
+
+\item{...}{any arguments that can be inputted into dplyr::filter.}
+}
 \description{
 Designate observations as significant based on filtering them using dplyr::filter.
 }

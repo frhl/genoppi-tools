@@ -14,9 +14,7 @@ genoppi(
   fdr_cutoff = 0.1,
   p_cutoff = NA,
   imp_list_file = NA,
-  verbose = T,
-  aggregate_info = T,
-  debug = F
+  verbose = T
 )
 }
 \arguments{
@@ -40,7 +38,7 @@ genoppi(
 }
 \description{
 the genoppi combined analysis script. This will run the pipeline
-generating correlation plots,
+generating correlation plots which has been written by Yu-Han and April.
 }
 \note{
 functions modified from Genoppi source code

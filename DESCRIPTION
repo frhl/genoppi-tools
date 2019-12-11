@@ -29,6 +29,7 @@ RoxygenNote: 7.0.2
 Collate: 
     'describe.R'
     'designate.R'
+    'enrichment.R'
     'geneTable.R'
     'genesData.R'
     'genoppi.R'

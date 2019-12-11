@@ -6,6 +6,9 @@
 \usage{
 warn(msg)
 }
+\arguments{
+\item{msg}{the message.}
+}
 \description{
 sends a message to stderr
 }

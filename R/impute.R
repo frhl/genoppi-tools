@@ -3,7 +3,8 @@
 #' with width SD x width and down-shifted Median-Sd x shift compared to observed sample distribution.
 #' This is building upon the assumption that missing values have arisen due to low expression that 
 #' can't be quantified. Therfore, shifting the median to lower expression levels will provide a 
-#' proxy of this.
+#' proxy of this. In contrast to, locf imputation, this ensures that the variance is not reduced
+#' which would consequently impact the moderated t.test.
 #' @param df a data.frame with numeric columns
 #' @param width numeric. change the factor of the standard deviation.
 #' @param shift numeric. Negative values will shift the median distribution downwards.
@@ -13,9 +14,9 @@
 #' 
 #' @references (Perseus, Tyanova et al. 2016)
 #' @return data.frame with missing values imputed.
+#' @export
 
-
-impute.gaussian <- function(df, width = 1, shift = 0){
+impute.gaussian <- function(df, width = 0.3, shift = -1.8){
   
   cols <- as.vector(unlist(lapply(df, function(x) is.numeric(x) & any(is.na(x)))))
   df$imputed <- as.logical(apply(df, 1, function(x) any(is.na(x))))
@@ -28,16 +29,6 @@ impute.gaussian <- function(df, width = 1, shift = 0){
   })
   return(df)
 }
-
-
-impute.locf <- function(df){
-  
-  # two misisng values replaced by valyes of the other replicate
-  
-}
-
-
-
 
 
 
