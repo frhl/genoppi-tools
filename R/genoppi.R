@@ -84,7 +84,6 @@ genoppi <- function(input_file,  bait_name, output_stats_file, output_plots_file
   #if (!is.na(imp_list_file)) {
   	#impDf <- read.table(imp_list_file,header=T,sep="\t")
   
-  
   ## this function must be dissected
   #browser()
   impDf <- out_stats[out_stats$impute == TRUE, ]

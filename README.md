@@ -26,3 +26,14 @@ Tools have not yet been fully tested.
 
 
 
+## example on how to setup personal pipeline
+library(rProteomics)
+
+infile = 'data/raw/frederik/frederik_BCAS3_proteins.csv'
+prelim <- prepare(c("EC", "BCAS3"), infile = infile, impute = list(shift = -0.8, stdwidth = 0.3))
+known.interactors <- interactors("BCAS3") # get known interactors
+
+data <- prelim %>% mttest()
+data %>% designate(FDR < 0.1) %>% plotScatter(bait, paste(bait, '[FDR < 0.1]'))
+data %>% designate(FDR < 0.1) %>% plotVolcano(bait)
+data %>% designate(FDR < 0.1) %>% plotOverlap(bait, known.interactors)
