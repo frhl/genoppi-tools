@@ -41,6 +41,10 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     if (!ncol(dataBait)) stop('bait columns were not found!')
     if (!ncol(dataMock)) stop('mock columns were not found!')
     if (is.null(dataBait) | is.null(dataMock)) stop('disproprionate amount of bait and mock columns were found')
+
+    # verbose
+    if (verbose) warn(paste('[Verbose] Selected bait cols:', paste(cnames[info$cols.bait], collapse = ' ')))
+    if (verbose) warn(paste('[Verbose] Selected mock cols:', paste(cnames[info$cols.control], collapse = ' ')))
     
     # prepare data
     stopifnot(ncol(dataBait) == ncol(dataMock)) # should have same amount of columns
