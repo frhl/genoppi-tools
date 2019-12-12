@@ -1,4 +1,4 @@
-#' @title pipeline for process proteomics data
+#' @title pipeline for preparing genomics data for statistical analysis
 #' @description a function that will process ip data
 #' from different baits, files and cells
 #' @param bait a vector containing that contains the bait and cell type that should be matched in a column.
@@ -31,10 +31,18 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   
   ## try to geuss the columns that is be used
   } else {
+    baitFound <- !unlist(lapply(bait, function(x) any(grepl(x, cnames))))
     info$cols.bait <- grepl(paste(bait, collapse='.*'), cnames) & (!info$cols.ratios)
     dataBait <- data[,info$cols.bait]
     dataMock <- data[,info$cols.control]
-    stopifnot(!is.null(dataBait) | !is.null(dataMock)) # should not be null
+    
+    # check format and give transparent error message
+    if (any(baitFound)) stop(paste(c(bait[baitFound], '(bait) not in data columns!.'), collapse = ' '))
+    if (!ncol(dataBait)) stop('bait columns were not found!')
+    if (!ncol(dataMock)) stop('mock columns were not found!')
+    if (is.null(dataBait) | is.null(dataMock)) stop('disproprionate amount of bait and mock columns were found')
+    
+    # prepare data
     stopifnot(ncol(dataBait) == ncol(dataMock)) # should have same amount of columns
     dataComb <- cbind(dataBait,dataMock)
     dataComb <- dataComb[,c(1,3,2,4)] # iTRAQ duplicates only for now // numbers should be checked
