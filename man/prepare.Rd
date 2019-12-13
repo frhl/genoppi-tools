@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare.R
 \name{prepare}
 \alias{prepare}
-\title{pipeline for process proteomics data}
+\title{pipeline for preparing genomics data for statistical analysis}
 \usage{
 prepare(
   bait,

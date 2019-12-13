@@ -18,19 +18,24 @@
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 
                     transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, verbose = F){
   
+
+
   ## do some initial checks
+  ## and read in the file
+  if (all(is.null(bait))) stop('Bait can not be NULL!')
+  if (is.null(dim(infile)) & !file.exists(infile)) stop('Infile must be either a file path that exists or a data.frame.')
   if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
   info = describe(data)
   cnames = colnames(data)
-    
+      
   ## if user has specified the columns to be used
   if (!is.null(cols)){
     verifyCols <- (cols %in% cnames)
     if (!all(verifyCols)) stop(paste0('>', cols[!verifyCols], '< is not in the data columns.', collapse = '\n'))
     tmpData <- data[,cols]
   
-  ## try to geuss the columns that is be used
   } else {
+    ## try to geuss the columns that is be used
     baitFound <- !unlist(lapply(bait, function(x) any(grepl(x, cnames))))
     info$cols.bait <- grepl(paste(bait, collapse='.*'), cnames) & (!info$cols.ratios)
     dataBait <- data[,info$cols.bait]
@@ -72,8 +77,11 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData <- tmpData[tmpData$human,]
   info$rows.removed.by.filter <- sum(as.numeric(!tmpData$human))
       
-  # 4) extract gene only
-  tmpData[,1] <- strSplitGene(tmpData[,1])
+  # 4) convert from uniprot to HGNC
+  #browser()
+  matr <- acession.convert(acession.matrix(tmpData$Accession), verbose = verbose)
+  tmpData$Accession <- matr$hgnc
+  #tmpData[,1] <- strSplitGene(tmpData[,1])
       
   # 5) impute if needed
   if (is.null(impute)) {
@@ -91,15 +99,10 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   # clean out the data and remove intensity columns
   if (!raw){
     tmpData = tmpData[,grepl('rep|Acc|impute', colnames(tmpData))]
-  }
-  
-  ## resulting data
-  if (!verbose){
-    return(tmpData)
-  } else {
+  } else (
     return(list(data=tmpData, info=info))
-  }
-
+  )
+  
 }
 
 
