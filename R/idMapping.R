@@ -29,6 +29,10 @@ strSplitGene <- function(vec, get = 'symbol'){
 
 acession.matrix <- function(vec){
   
+  ## inital checks
+  stopifnot(!is.null(vec))
+  stopifnot(length(vec) > 0)
+  
   ## assumes format X|X|X_X, i.e.  4 elements
   mat <- lapply(vec, function(x) {
     entry <- unlist(strsplit(as.character(x),'\\||\\_'))
@@ -36,6 +40,7 @@ acession.matrix <- function(vec){
     else if (length(entry == 4)) return(entry)
     else return(rep(NA,4))
   })
+  
   mat <- as.data.frame(do.call(rbind, mat))
   colnames(mat) <- c('sp', 'uniprot', 'symbol', 'species')
   
@@ -54,17 +59,17 @@ acession.matrix <- function(vec){
 #' @description Input an acession matrix to subset it accordingly. It will
 #' map uniprot IDs to their corresponding HGNC symbols.
 #' @param mat an acession.matrix
-#' @param species should a species by subsetted?
 #' @author flassen
 #' @family id
 #' @export
 
-acession.convert <- function(mat, species = 'HUMAN',  verbose = T){
+acession.convert <- function(mat,  verbose = T){
   
   require(hashmap)
   
-  # load mapping
-  mat <- mat[mat$species %in% species,]
+  # check input
+  stopifnot(!is.null(mat))
+  stopifnot(length(dim(mat)) > 1)
   hm <- load_hashmap('~/Toolbox/packages/pRoteomics/data/uniprotid_to_hgnc')
   hits = hm$keys() %in% mat$uniprot$id
   

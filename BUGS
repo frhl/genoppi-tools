@@ -1,0 +1,5 @@
+# known bugs
+
+* Prepare.R can only handle protein files, and not peptides. This seem to be an easy fix, as seem
+to fail on filtering peptides based on uniqueness.
+* Prepare.R can not automatically identify bait/mock in PTV data.

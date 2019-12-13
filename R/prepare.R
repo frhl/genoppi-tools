@@ -46,17 +46,16 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     if (!ncol(dataBait)) stop('bait columns were not found!')
     if (!ncol(dataMock)) stop('mock columns were not found!')
     if (is.null(dataBait) | is.null(dataMock)) stop('disproprionate amount of bait and mock columns were found')
-
+    if (ncol(dataBait) != ncol(dataMock)) stop('disproprionate amount of bait and mock columns were found')
+    
     # verbose
     if (verbose) warn(paste('[Verbose] Selected bait cols:', paste(cnames[info$cols.bait], collapse = ' ')))
     if (verbose) warn(paste('[Verbose] Selected mock cols:', paste(cnames[info$cols.control], collapse = ' ')))
     
-    # prepare data
-    stopifnot(ncol(dataBait) == ncol(dataMock)) # should have same amount of columns
+    # prepare data # should have same amount of columns
     dataComb <- cbind(dataBait,dataMock)
     dataComb <- dataComb[,c(1,3,2,4)] # iTRAQ duplicates only for now // numbers should be checked
     tmpData <- cbind(data[info$col.accession], dataComb)
-    
   }
   
   # Replace zeros with NAs
@@ -68,19 +67,14 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData = normalize(tmpData, type = normalization)
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
-  
-  ## note (this is ugly code.. clean up)
   tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2
   tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
-  info$rows.with.too.few.proteins <- sum(as.numeric(!tmpData$enoughProteins))
   tmpData$human <- grepl(filter, tmpData[,1])
   tmpData <- tmpData[tmpData$human,]
-  info$rows.removed.by.filter <- sum(as.numeric(!tmpData$human))
-      
-  # 4) convert from uniprot to HGNC
-  #browser()
-  matr <- acession.convert(acession.matrix(tmpData$Accession), verbose = verbose)
-  tmpData$Accession <- matr$hgnc
+  
+  # 4) convert from uniprot to HGNC\
+  matr <- acession.matrix(tmpData[,1]) # first column is the acession
+  tmpData$Accession <- acession.convert(matr)
   #tmpData[,1] <- strSplitGene(tmpData[,1])
       
   # 5) impute if needed
