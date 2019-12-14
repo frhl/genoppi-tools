@@ -13,6 +13,13 @@ plotOverlap <- function(df, bait, reference, title = '', drawLabel = T){
   require(ggplot2)
   require(ggrepel)
   
+  # If a df with only genes are inputted assume
+  # that the user would like to just overlay genes
+  if (ncol(reference) == 1){ 
+    reference <- data.frame(gene=reference$gene, significant=TRUE)
+    warn('[plotOverlap] no "significant"-column, assuming all genes significant.')
+  }
+  
   # generate statistics for enrichement
   statistics <- enrichment(df, bait, reference)
   

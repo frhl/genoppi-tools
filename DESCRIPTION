@@ -51,5 +51,6 @@ Collate:
     'prepare.R'
     'ptable.R'
     'pTransform.R'
+    'review.R'
     'snpToGene.R'
 
