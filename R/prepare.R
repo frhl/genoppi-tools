@@ -43,6 +43,8 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     
     # check format and give transparent error message
     if (any(baitFound)) stop(paste(c(bait[baitFound], '(bait) not in data columns!.'), collapse = ' '))
+    if (sum(info$cols.bait) == 1) stop('expected at least two columns of baits, only one was found!')
+    if (sum(info$cols.mock) == 1) stop('expected at least two columns of controls, only one was found!')
     if (!ncol(dataBait)) stop('bait columns were not found!')
     if (!ncol(dataMock)) stop('mock columns were not found!')
     if (is.null(dataBait) | is.null(dataMock)) stop('disproprionate amount of bait and mock columns were found')
@@ -74,7 +76,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   
   # 4) convert from uniprot to HGNC\
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
-  tmpData$Accession <- acession.convert(matr)
+  tmpData$Accession <- acession.convert(matr)$hgnc # extract hgnc symbol
   #tmpData[,1] <- strSplitGene(tmpData[,1])
       
   # 5) impute if needed

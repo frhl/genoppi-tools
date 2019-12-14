@@ -37,10 +37,18 @@ warn <- function(msg){
 #' @return will create a directory based on relative paths and return
 #' a list of file names to be used for writing.
 #' @export
-mkdir <- function(bait='', cell='', variation = "", name = paste0(bait,'_',cell)){
+mkdir <- function(bait='', cell='', variation = "", run = '', name = paste0(bait,'_',cell)){
   
+  # if run is specified, it will create a master folder
+  # in which all files will be organized
+  if (run != ''){
+    dir.run = paste0('derived/',run, '/')
+    dir.create(dir.run)
+    newdir <- paste0(c(dir.run,name), collapse = '/')
+  } else{
+    newdir <- paste0(c('derived/',name), collapse = '')
+  }
   cur.time <- toupper(format(Sys.time(), "%d%b%Y"))
-  newdir <- paste0(c('derived/',name), collapse = '')
   output <- paste0(c(name,'_',variation, cur.time), collapse = '')
   newfile <- file.path(newdir, output)
   pdfpath <- paste0(newfile, '.pdf')

@@ -41,6 +41,7 @@ acession.matrix <- function(vec){
     else return(rep(NA,4))
   })
   
+  
   mat <- as.data.frame(do.call(rbind, mat))
   colnames(mat) <- c('sp', 'uniprot', 'symbol', 'species')
   
@@ -48,10 +49,15 @@ acession.matrix <- function(vec){
   isoforms <- lapply(strsplit(as.character(mat$uniprot), '\\-'), function(x){
     if (length(x) == 1) return(c(x, NA)) else return(x)})
   isoforms <- as.data.frame(do.call(rbind, isoforms))
-  colnames(isoforms) <- c('id', 'isoform')
+  colnames(isoforms) <- c('uniprot.id', 'uniprot.isoform')
+  
+  ## check formats
+  stopifnot(nrow(isoforms) == nrow(mat))
   
   ## merge data.frames
-  mat$uniprot <- isoforms
+  mat <- as.data.frame(cbind(mat, isoforms))
+  mat$uniprot <- NULL # remove old uniprot
+  
   return(mat)
 }
 
@@ -61,6 +67,10 @@ acession.matrix <- function(vec){
 #' @param mat an acession.matrix
 #' @author flassen
 #' @family id
+#' @return an acession matrix with two new columns:
+#' 1) from will indicate whether the uniprot ID was found and converted to HGNC, NA will indicate this
+#' was not the case (i.e. the original symbol found in the acession string will be used).
+#' 2) hgnc the symbol derived after conversion from uniprot ID to HGNC.
 #' @export
 
 acession.convert <- function(mat,  verbose = T){
@@ -76,8 +86,9 @@ acession.convert <- function(mat,  verbose = T){
   ## assign new IDs
   mat$from <- NA
   mat$hgnc <- NA
-  newids <- hm[[mat$uniprot$id]]
+  newids <- hm[[mat$uniprot.id]]
   mat$hgnc[!is.na(newids)] <- newids[!is.na(newids)]
+  mat$hgnc[mat$hgnc == ''] <- NA
   mat$from[!is.na(mat$hgnc)] <- 'uniprot'
   mat$hgnc[is.na(mat$from)] <- as.character(mat$symbol[is.na(mat$from)])
   
@@ -88,7 +99,6 @@ acession.convert <- function(mat,  verbose = T){
   
 }
 
-#mkhashtable()
 
 
 
@@ -108,9 +118,9 @@ acession.convert <- function(mat,  verbose = T){
 #library('biomaRt')
 #mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
 #ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
-#filters = listFilters(ensembl)
+filters = listFilters(ensembl)
 #dat = getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'uniprot_gn_symbol'), mart = ensembl)
-#dat = getBM(attributes = c('hgnc_symbol', 'uniprot_gn_id', 'uniprot_gn_symbol'), mart = ensembl)
+dat = getBM(attributes = c('hgnc_symbol', 'uniprot_gn_id', 'uniprot_gn_symbol'), mart = ensembl)
 
 #hgnc_uniprot_mapping = dat
 #save(hgnc_uniprot_mapping, file = 'hgnc_uniprot_mapping.RData')

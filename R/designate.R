@@ -25,7 +25,7 @@ designate <- function(data, ...){
   filtered = filter(data, ...)
   if (nrow(filtered) != 0) {
     data[data$idd %in% filtered$idd, ]$significant <- TRUE
-  } else {warning('no rows were designated as significant since the criteria did not apply.') }
+  } #else {warning('no rows were designated as significant since the criteria did not apply.') }
   data$idd <- NULL
   
   return(data)
