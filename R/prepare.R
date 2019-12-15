@@ -19,7 +19,7 @@
 #' @export
 #' @return a table that can be inputted to genoppi
 
-prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 
+prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -1.8), 
                     transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL,
                     filter.ignore = NULL, verbose = F){
   
@@ -72,7 +72,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData = normalize(tmpData, type = normalization)
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
-  tmpData$filter.ignore <- detect(tmpData, filter.ignore)
+  tmpData$filter.ignore <- detect(tmpData, filter.ignore) # allow user to ignore rows
   nignored <- sum(tmpData$filter.ignore)
   tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2 | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
