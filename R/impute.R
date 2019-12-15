@@ -26,7 +26,8 @@ impute.gaussian <- function(df, width = 0.3, shift = -1.8, verbose = T){
     x[is.na(x)] <- rnorm(sum(as.numeric(is.na(x))), mean = me, sd = std)
     return(x)
   }
-  warn(paste('[impute] imputed', sum(is.na(df)), 'value(s).'))
+  nimputed <- sum(is.na(df))
+  if (verbose & nimputed > 0) warn(paste('[impute] imputed',nimputed, 'value(s).'))
   if (sum(cols) == 1) df[, cols] <- impute(df[,cols])
   if (sum(cols > 1)) df[, cols] <- lapply(df[,cols], impute)
   return(df)

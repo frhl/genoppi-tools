@@ -3,6 +3,7 @@
 #' see whether the entry is in it.
 #' @param data a data.frame
 #' @param entry a string or regular expression.
+#' @param details will return the entire data.frame which contains the entry
 #' @author flassen
 #' @family id
 #' @return row-wise boolean indiciating whether the entry is present in the data.
@@ -10,7 +11,7 @@
 #' @export
 
 
-detect <- function(data, entry){
+detect <- function(data, entry, details = F){
   
   if (!is.null(entry)){
     if (is.character(data)) data <- read.csv(data)
@@ -20,8 +21,9 @@ detect <- function(data, entry){
     matc <- acession.convert(mata, verbose = F)
     data <- cbind(data, matc)
     ## get row in whitch the entry can be found
-    result <- apply(sapply(matc, function(x) grepl(entry, x)), 1, any) 
-    return(result)
+    result <- apply(sapply(matc, function(x) grepl(entry, x)), 1, any)
+    if (!details) return(result)
+    else return(data[result,])
   } else return(FALSE)
 
 }

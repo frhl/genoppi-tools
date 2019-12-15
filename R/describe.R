@@ -16,7 +16,13 @@ describe <- function(data, verbose = F){
   info$cols.ratios <- grepl('ratio', cnames)
   info$cols.control <- grepl('mock', cnames) & (!info$cols.ratios)
   info$possiblebaits <- info$cols.intensity & (!info$cols.ratios) & (!info$cols.control)
-  info$col.accession <- grepl('accession', cnames)
+  
+  # That accession column can be both accession
+  # or gene id
+  #if (any(grepl('accession', cnames))){
+    info$col.accession <- grepl('accession', cnames)
+  #} else info$col.accession <- grepl('^gene', cnames)
+
   info$col.unique.proteins <- grepl('unique', cnames)
   
   # check format of columns

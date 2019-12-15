@@ -76,7 +76,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   nignored <- sum(tmpData$filter.ignore)
   tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2 | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
-  tmpData$human <- grepl(filter, tmpData[,1]) #| tmpData$filter.ignore
+  tmpData$human <- grepl(filter, tmpData[,1]) | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$human,]
   if (verbose & nignored > 0) warn(paste('[filtering]', nignored, 'entries was ignored.'))
   
