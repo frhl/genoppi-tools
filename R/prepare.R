@@ -19,8 +19,6 @@
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 
                     transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL, verbose = F){
   
-
-
   ## do some initial checks
   ## and read in the file
   if (all(is.null(bait))) stop('Bait can not be NULL!')
@@ -75,10 +73,13 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData$human <- grepl(filter, tmpData[,1])
   tmpData <- tmpData[tmpData$human,]
   
+  warning('should check if bait was filtered out..!')
+  
+  
   # 4) convert from uniprot to HGNC\
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
-  tmpData$Accession <- acession.convert(matr)$hgnc # extract hgnc symbol
-  #tmpData[,1] <- strSplitGene(tmpData[,1])
+  matr.convert <- acession.convert(matr)
+  tmpData$Accession <-matr.convert$hgnc # extract hgnc symbol
       
   # 5) impute if needed
   if (is.null(impute)) {

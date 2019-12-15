@@ -32,15 +32,21 @@ acession.matrix <- function(vec){
   ## inital checks
   stopifnot(!is.null(vec))
   stopifnot(length(vec) > 0)
-  
+
   ## assumes format X|X|X_X, i.e.  4 elements
   mat <- lapply(vec, function(x) {
-    entry <- unlist(strsplit(as.character(x),'\\||\\_'))
-    if (length(entry) == 3) return(c(NA, entry))
-    else if (length(entry == 4)) return(entry)
-    else return(rep(NA,4))
+    entry = unlist(strsplit(as.character(x),'\\||\\_'))
+    n = as.numeric(length(entry))
+    if (n == 3) {return(c(NA, entry))}
+    if (n == 4) {return(entry)}
+    if (n == 5) {return(c(NA, NA, entry[4], NA))} # gi|999627|pdb|1EPT|B
+    if (n == 6) {return(entry[3:6])} # for entries looking like this: gi|125138|sp|P01840.1|KAC4_RABIT
+    return(rep(NA,4))
   })
   
+  #unique(sort(unlist(lapply(mat, length))))
+  #num <- which(lapply(mat, length) %in% c(5,6))
+  #vec[num]
   
   mat <- as.data.frame(do.call(rbind, mat))
   colnames(mat) <- c('sp', 'uniprot', 'symbol', 'species')
@@ -76,7 +82,7 @@ acession.matrix <- function(vec){
 acession.convert <- function(mat,  verbose = T){
   
   require(hashmap)
-  
+
   # check input
   stopifnot(!is.null(mat))
   stopifnot(length(dim(mat)) > 1)
