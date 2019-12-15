@@ -12,12 +12,16 @@
 #' @param filter character. only accession IDs of the filter specified are included.
 #' @param raw will return the data.frame alongside the raw intensity values.
 #' @param firstcol will change the name of the first column to the string indicated
+#' @param filter.ignore will try to match the inputted vector or character to acession IDs. If sucessful,
+#' it will ignore further filtering of this item. This could for instance be used, if the bait only has
+#' one unique protein, and would therefore otherwise be filtered.
 #' @param verbose boolean. if true, returns the table and a list with updates.
 #' @export
 #' @return a table that can be inputted to genoppi
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 
-                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL, verbose = F){
+                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL,
+                    filter.ignore = NULL, verbose = F){
   
   ## do some initial checks
   ## and read in the file
@@ -68,19 +72,19 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData = normalize(tmpData, type = normalization)
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
-  tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2
+  tmpData$filter.ignore <- detect(tmpData, filter.ignore)
+  nignored <- sum(tmpData$filter.ignore)
+  tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2 | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
-  tmpData$human <- grepl(filter, tmpData[,1])
+  tmpData$human <- grepl(filter, tmpData[,1]) #| tmpData$filter.ignore
   tmpData <- tmpData[tmpData$human,]
-  
-  warning('should check if bait was filtered out..!')
-  
+  if (verbose & nignored > 0) warn(paste('[filtering]', nignored, 'entries was ignored.'))
   
   # 4) convert from uniprot to HGNC\
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
   matr.convert <- acession.convert(matr)
   tmpData$Accession <-matr.convert$hgnc # extract hgnc symbol
-      
+  
   # 5) impute if needed
   if (is.null(impute)) {
     tmpData = tmpData[complete.cases(tmpData),] 
@@ -94,6 +98,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   info$total.rows.remove <- nrow(data) - nrow(tmpData)
   tmpData = logFC(tmpData)
 
+  
   # clean out the data and remove intensity columns
   if (!raw){
     tmpData = tmpData[,grepl('rep|Acc|impute', colnames(tmpData))]

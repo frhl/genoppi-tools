@@ -23,9 +23,11 @@ null.omit <- function(x) {
 #' @title warnings to stderr
 #' @description sends a message to stderr
 #' @param msg the message.
+#' @param file write logs to file as well as stderr.
 #' @export
-warn <- function(msg){
+warn <- function(msg, file = NULL){
   write(msg,stderr())
+  if (!is.null(file)) write(msg, file)
 }
 
 #' @title make genoppi directories
@@ -54,8 +56,10 @@ mkdir <- function(bait='', cell='', variation = "", run = '', name = paste0(bait
   pdfpath <- paste0(newfile, '.pdf')
   txtpath <- paste0(newfile, '.txt')
   csvpath <- paste0(newfile, '.csv')
+  logpath <- paste0(newfile, '.log')
   csvpathsum <- paste0(newfile, '_SUMMARY.csv')
   dir.create(newdir)
   
-  return(list(dir=newdir, output = output, basename = newfile, pdfpath = pdfpath, txtpath = txtpath, csvpath = csvpath, csvpathsum = csvpathsum))
+  return(list(dir=newdir, output = output, basename = newfile, pdfpath = pdfpath, txtpath = txtpath, 
+              svpath = csvpath, csvpathsum = csvpathsum, logpath = logpath))
 }
