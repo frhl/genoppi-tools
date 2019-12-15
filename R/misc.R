@@ -54,7 +54,8 @@ mkdir <- function(bait='', cell='', variation = "", run = '', name = paste0(bait
   pdfpath <- paste0(newfile, '.pdf')
   txtpath <- paste0(newfile, '.txt')
   csvpath <- paste0(newfile, '.csv')
+  csvpathsum <- paste0(newfile, '_SUMMARY.csv')
   dir.create(newdir)
   
-  return(list(dir=newdir, output = output, basename = newfile, pdfpath = pdfpath, txtpath = txtpath, csvpath = csvpath))
+  return(list(dir=newdir, output = output, basename = newfile, pdfpath = pdfpath, txtpath = txtpath, csvpath = csvpath, csvpathsum = csvpathsum))
 }

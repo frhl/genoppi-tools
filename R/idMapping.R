@@ -81,7 +81,7 @@ acession.convert <- function(mat,  verbose = T){
   stopifnot(!is.null(mat))
   stopifnot(length(dim(mat)) > 1)
   hm <- load_hashmap('~/Toolbox/packages/pRoteomics/data/uniprotid_to_hgnc')
-  hits = hm$keys() %in% mat$uniprot$id
+  hits = hm$keys() %in% mat$uniprot.id
   
   ## assign new IDs
   mat$from <- NA
@@ -115,12 +115,12 @@ acession.convert <- function(mat,  verbose = T){
 
 
 #.libPaths('~/Toolbox/rlib/')
-library('biomaRt')
-mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
-ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
-filters = listFilters(ensembl)
+#library('biomaRt')
+#mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
+#ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
+#filters = listFilters(ensembl)
 #dat = getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'uniprot_gn_symbol'), mart = ensembl)
-dat = getBM(attributes = c('hgnc_symbol', 'reactome', 'reactome_gene'), mart = ensembl)
+#dat = getBM(attributes = c('hgnc_symbol', 'reactome', 'reactome_gene'), mart = ensembl)
 
 #hgnc_uniprot_mapping = dat
 #save(hgnc_uniprot_mapping, file = 'hgnc_uniprot_mapping.RData')

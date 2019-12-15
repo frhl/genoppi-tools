@@ -37,7 +37,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   } else {
     ## try to geuss the columns that is be used
     baitFound <- !unlist(lapply(bait, function(x) any(grepl(x, cnames))))
-    info$cols.bait <- grepl(paste(bait, collapse='.*'), cnames) & (!info$cols.ratios)
+    info$cols.bait <- grepl(paste(bait, collapse='.*'), cnames) & (!info$cols.ratios) & (!info$cols.control)
     dataBait <- data[,info$cols.bait]
     dataMock <- data[,info$cols.control]
     

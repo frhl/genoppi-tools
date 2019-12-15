@@ -8,7 +8,7 @@
 
 ### --------------------------------------------------
 ### gene list overlap enrichment test + volcano plot
-plotOverlap <- function(df, bait, reference, title = '', drawLabel = T){
+plotOverlap <- function(df, bait, reference, title = '', subtitle = NULL, drawLabel = T){
   
   require(ggplot2)
   require(ggrepel)
@@ -44,8 +44,10 @@ plotOverlap <- function(df, bait, reference, title = '', drawLabel = T){
     
     # title (with statistics$fisherP) and theme
     labs(title = title,
-         subtitle = paste(length(statistics$sigGenes)," detected. ",length(statistics$overlap),
-                       " significant. p-value = ", format(statistics$fisherP,digits=3),sep="")) + 
+         subtitle =  ifelse(is.null(subtitle), 
+           paste(length(statistics$sigGenes)," detected. ",length(statistics$overlap),
+           " significant. p-value = ", format(statistics$fisherP,digits=3),sep=""),
+           subtitle))+ 
     
     #ggtitle( +
     theme_bw() + theme(axis.line=element_line(color="grey"), plot.title=element_text(size=10)) + ggstamp()
