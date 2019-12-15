@@ -10,7 +10,7 @@
 #' @param shift numeric. Negative values will shift the median distribution downwards.
 #' @note No down-shifting and stdwith of 0.5 do not simualte low abudant missing values.
 #' down-shifting of 0.8 and stdwidth of 0.5 simulates low abundant missing values. 
-#' down-shifting of 3.6 and stdwith of 0.5 results in bi-modal distribution.
+#' down-shifting of 3.6 and stdwith of 0.5 results in (usually undesired) bi-modal distribution.
 #' 
 #' @references (Perseus, Tyanova et al. 2016)
 #' @return data.frame with missing values imputed.
@@ -18,9 +18,14 @@
 
 impute.gaussian <- function(df, width = 0.3, shift = -1.8){
   
+  stop('this needs to be fixed..')
+  browser()
+  
   cols <- as.vector(unlist(lapply(df, function(x) is.numeric(x) & any(is.na(x)))))
   df$imputed <- as.logical(apply(df, 1, function(x) any(is.na(x))))
-  df[, cols] <- lapply(df[, cols], function(x){
+  #df[, cols] <- 
+    lapply(df[, cols], function(x){
+      browser()
     std <- sd(x, na.rm = T) * width # adjsuted/down-shifted mean (sample mean - SD * shift)
     me <- median(x, na.rm = T) + sd(x, na.rm = T) * shift  # adjsuted SD (sample SD * width)
     

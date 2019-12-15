@@ -11,12 +11,13 @@
 #' @param normalization character. an R-command for how the data should be collumn-wise transformned.
 #' @param filter character. only accession IDs of the filter specified are included.
 #' @param raw will return the data.frame alongside the raw intensity values.
+#' @param firstcol will change the name of the first column to the string indicated
 #' @param verbose boolean. if true, returns the table and a list with updates.
 #' @export
 #' @return a table that can be inputted to genoppi
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -0.8), 
-                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, verbose = F){
+                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL, verbose = F){
   
 
 
@@ -91,10 +92,12 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   # 6) calculate log fold change
   info$total.rows.remove <- nrow(data) - nrow(tmpData)
   tmpData = logFC(tmpData)
-  
+
   # clean out the data and remove intensity columns
   if (!raw){
     tmpData = tmpData[,grepl('rep|Acc|impute', colnames(tmpData))]
+    if (!is.null(firstcol)) colnames(tmpData)[1] <- 'gene'
+    return(tmpData)
   } else (
     return(list(data=tmpData, info=info))
   )
