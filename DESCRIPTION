@@ -32,6 +32,7 @@ Collate:
     'designate.R'
     'detect.R'
     'enrichment.R'
+    'expandProxies.R'
     'geneTable.R'
     'genesData.R'
     'genoppi.R'
