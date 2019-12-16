@@ -6,6 +6,21 @@ review <- function(params = NULL){
   
   if (!is.null(params)){
     lstnames <- names(params)
+    
+    if ('experiment' %in% lstnames){
+      lst$experiment <- params$experiment
+    }
+    if ('bait' %in% lstnames){
+      lst$bait <- params$bait
+    }
+    if ('cell' %in% lstnames){
+      lst$bait <- params$cell
+    }
+    # How many of uniprots were converted sucessfully to HGNC
+    if ('coverage' %in% lstnames){
+      lst$bait <- params$coverage
+    }
+    
     ## sumamrize data itself
     if ('data' %in% lstnames){
       lst$data.rows <- nrow(params$data) # proteins indentified
@@ -29,6 +44,8 @@ review <- function(params = NULL){
     if ('infile' %in% lstnames){
       lst$file <- params$infile
     }
+
+    
   }
   
   lst <- do.call(data.frame, lst)
