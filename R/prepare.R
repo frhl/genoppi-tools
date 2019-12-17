@@ -20,19 +20,20 @@
 #' @return a table that can be inputted to genoppi
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -1.8), 
-                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = NULL,
+                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = 'gene',
                     filter.ignore = NULL, verbose = F){
   
   ## do some initial checks
   ## and read in the file
   if (all(is.null(bait))) stop('Bait can not be NULL!')
-  if (is.null(dim(infile)) & !file.exists(infile)) stop('Infile must be either a file path that exists or a data.frame.')
+  #if (is.null(dim(infile)) & !file.exists(infile)) stop('Infile must be either a file path that exists or a data.frame.')
   if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
   info = describe(data)
   cnames = colnames(data)
       
   ## if user has specified the columns to be used
   if (!is.null(cols)){
+
     verifyCols <- (cols %in% cnames)
     if (!all(verifyCols)) stop(paste0('>', cols[!verifyCols], '< is not in the data columns.', collapse = '\n'))
     tmpData <- data[,cols]
@@ -82,7 +83,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   
   # 4) convert from uniprot to HGNC\
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
-  matr.convert <- acession.convert(matr)
+  matr.convert <- acession.convert(matr, verbose = verbose)
   tmpData$Accession <-matr.convert$hgnc # extract hgnc symbol
   
   # 5) impute if needed

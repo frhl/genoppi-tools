@@ -28,4 +28,30 @@ expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
   
 }
 
+makeInteractionMap <- function(data, ...){
+  
+  dat <- filter(data, ...)
+  mapping <- lapply(as.character(dat$gene), function(x){
+    proteins = interactors(x, verbose = T)
+    return(proteins)
+  })
+  
+  # data into inweb matrix
+  genes <- keys(inweb_hash)
+  comb <- lapply(mapping, function(x) x[2])
+  comb <- do.call(cbind, comb)
+  colnames(comb) <-  as.character(dat$gene)
+  rownames(comb) <- comb$genes
+  
+  # filter data
+  indata <- comb[comb$genes %in% dat$gene, ] # note: here we take all the proteins
+  indata[, ]
+  
+  #indata[, 2:ncol(indata)] <- indata[, c('genes', as.character(indata$genes))]
+  
+}
+
+
+
+
 

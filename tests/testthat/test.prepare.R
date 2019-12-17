@@ -10,6 +10,76 @@ if (F){
 }
 
 
+## setup testing environment
+fun = 'prepare'
+data <- readRDS(file = 'tests/testthat/data/ms1.rds')
+
+
+test_that('standard functionality',{
+  
+  # 
+  id <- 'A1'
+  res <- prepare(c('EC', 'EDNRA'), data)
+  ref <- testpaths(id, fun)$ref
+  expect_equal_to_reference(res, ref)
+  #saveRDS(res, 'tests/testthat/reference/prepare/prepare.A1.rds')
+  
+})
+
+
+## get targets official hgnc
+uniprot <- acession.convert(acession.matrix(data$Accession)) 
+
+
+test_that('proteins can be retained with filtering',{
+  
+  ## only one peptide
+  id <- 'B1'
+  target <- 'PEO1'
+  target.uniprot <- uniprot[uniprot$symbol == target, ]$hgnc
+  
+  # with and without filtering
+  wo <- c(target, target.uniprot) %in% prepare(c('EC', 'EDNRA'), data, firstcol = 'gene')$gene
+  w <- c(target, target.uniprot) %in% prepare(c('EC', 'EDNRA'), data, firstcol = 'gene', filter.ignore = 'PEO1')$gene
+  expect_false(any(wo)); expect_true(any(w))
+  
+  ## only one peptide
+  id <- 'B2'
+  target <- 'KAC4'
+  target.uniprot <- uniprot[uniprot$symbol == target, ]$hgnc
+  
+  # with and without filtering
+  wo <- c(target, target.uniprot) %in% prepare(c('EC', 'EDNRA'), data, firstcol = 'gene')$gene
+  w <- c(target, target.uniprot) %in% prepare(c('EC', 'EDNRA'), data, firstcol = 'gene', filter.ignore = 'KAC4')$gene
+  expect_false(any(wo)); expect_true(any(w))
+  
+})
+
+test_that('Columns can be inputted manually',{
+  
+  
+  # invalid cols generate an error
+  id <- 'C1'
+  cols = c('notvalidcolumn')
+  expect_error(prepare(c('EC', 'EDNRA'), data, cols = cols))
+  
+  
+  # Standard functionaliyu
+  id <- 'C2'
+  cols = c("Accession",
+           'Intensity.EC.EDNRA1.iTRAQ4.114.', 'Intensity.EC.mock1.iTRAQ4.116.',
+           'Intensity.EC.EDNRA2.iTRAQ4.115.', 'Intensity.EC.mock2.iTRAQ4.117.')
+  res = prepare(c('EC', 'EDNRA'), data, cols = cols, verbose = T)
+  ref = testpaths(id, fun)$ref
+  expect_equal_to_reference(res, ref)
+  
+})
+
+
+
+
+
+
 test_that('that this output matches something we have generated before',{
   
   ## check standard fucntionality
