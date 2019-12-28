@@ -16,15 +16,21 @@ expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
   # Select the top most enriched data points
   tmp <- data[data$FDR < cutoff.fdr, ]
   tmp <- tmp[rev(order(tmp$logFC)), ]
-  dat <- tmp[1:top, ]
+  dat <- tmp[1:min(top, nrow(tmp)), ]
   
   # Find inweb interactors that are also present in data
   interact <- lapply(as.character(dat$gene), function(x){
+    # subset of proteins already in the data
     proteins = interactors(x, verbose = F)
     proteins = proteins[proteins$significant,]
-    proteins = proteins[proteins$gene %in% data$gene,]
+    proteins = data[data$gene %in% proteins$gene,]
+    proteinsSorted <- proteins[rev(order(proteins$logFC)), ]
+    
+    #proteins = proteins[proteins$gene %in% data$gene,]
+    #merge(proteins, data, by='gene')
+    
     if (verbose) warn(paste('[InWeb]: Found', nrow(proteins), 'interactors for', x))
-    return(proteins)
+    return(proteinsSorted)
   })
   
   # return list of desired results
