@@ -6,7 +6,7 @@
 #' @export
 #' @return a table that can be inputted to genoppi
 
-expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
+expandProxies <- function(data, cutoff.fdr = 0.1, top=10, verbose = T){
   
   cnames = colnames(data)
   stopifnot('FDR' %in% cnames)
@@ -23,14 +23,13 @@ expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
     # subset of proteins already in the data
     proteins = interactors(x, verbose = F)
     proteins = proteins[proteins$significant,]
-    proteins = data[data$gene %in% proteins$gene,]
-    proteinsSorted <- proteins[rev(order(proteins$logFC)), ]
-    
-    #proteins = proteins[proteins$gene %in% data$gene,]
-    #merge(proteins, data, by='gene')
+    proteins = proteins[proteins$gene %in% data$gene,]
+    #proteins = data[data$gene %in% proteins$gene,]
+    #proteinsSorted <- proteins[rev(order(proteins$logFC)), ]
+    #proteinsSorted$significant <- TRUE # all are found in inweb
     
     if (verbose) warn(paste('[InWeb]: Found', nrow(proteins), 'interactors for', x))
-    return(proteinsSorted)
+    return(proteins)
   })
   
   # return list of desired results
@@ -39,7 +38,26 @@ expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
   
 }
 
+#' @title Plot proxies sequentially
+#' @description takes the data and a list of data.frames (generated with \code{expandProxies}),
+#' and generated an overlap plot.
+#' @param data a data.frame containing gene, logFC, pvalue and significant.
+#' @param proxylist a list of data.frames in which the name of the list item correspond
+#' to the prox bait, and the data.frame is all the interactors.
+
+plotProxies <- function(data, proxylist, title.vs = 'control'){
+  
+  for (i in 1:length(proxylist)){
+    bait = names(proxylist)[i]
+    interactors = proxylist[[i]]
+    title = paste(c('proxy bait:',bait, 'vs', title.vs, '(InWeb Overlap)'), collapse = ' ')
+    plotOverlap(data, bait, interactors, title)
+  }
+}
+
 makeInteractionMap <- function(data, ...){
+  
+  stop('work in progress..')
   
   dat <- filter(data, ...)
   mapping <- lapply(as.character(dat$gene), function(x){
