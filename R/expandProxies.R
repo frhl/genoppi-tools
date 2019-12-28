@@ -8,6 +8,11 @@
 
 expandProxies <- function(data, cutoff.fdr = 0.1, top=2, verbose = T){
   
+  cnames = colnames(data)
+  stopifnot('FDR' %in% cnames)
+  stopifnot('logFC' %in% cnames)
+  stopifnot('gene' %in% cnames)
+  
   # Select the top most enriched data points
   tmp <- data[data$FDR < cutoff.fdr, ]
   tmp <- tmp[rev(order(tmp$logFC)), ]

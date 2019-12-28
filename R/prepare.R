@@ -89,8 +89,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   # 5) impute if needed
   if (is.null(impute)) {
     tmpData = tmpData[complete.cases(tmpData),] 
-  } else {
-      if (all(c('stdwidth' , 'shift') %in% names(impute))){
+  } else { if (all(c('stdwidth' , 'shift') %in% names(impute))){
         tmpData = impute.gaussian(tmpData, impute$stdwidth, impute$shift)
       } else {stop('Use impute params "stdwidth" and "shift" only.')}
     }
