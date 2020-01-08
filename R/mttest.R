@@ -8,7 +8,7 @@
 #' @export
  
 
-mttest <- function(df, keep = c('uniprot', 'imputed')){
+mttest <- function(df, keep = c('imputed')){
   
   require(limma)
   
@@ -18,9 +18,6 @@ mttest <- function(df, keep = c('uniprot', 'imputed')){
   # isolate rep columns
   reps <- grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric))
   calculated <- df[, reps]
-  
-  # apply median normalization
-  # calculated <- normalize(calculated) # <---- DISCUSS WITH APRIL
   
   # calc moderated t-test
   myfit <- lmFit(calculated, method="robust")
@@ -36,7 +33,9 @@ mttest <- function(df, keep = c('uniprot', 'imputed')){
   
   # keep columns
   keep = keep[(keep %in% colnames(df))]
-  calculated <- cbind(calculated, df[,keep])
+  ndf = data.frame(df[,keep])
+  names(ndf) = keep
+  calculated <- cbind(calculated, ndf)
   
   return(calculated)
 }
