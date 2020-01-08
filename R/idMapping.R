@@ -35,8 +35,11 @@ acession.matrix <- function(vec){
 
   ## assumes format X|X|X_X, i.e.  4 elements
   mat <- lapply(vec, function(x) {
+    
+    #if (grepl('FLAG', x)) browser()
     entry = unlist(strsplit(as.character(x),'\\||\\_'))
     n = as.numeric(length(entry))
+    #if (grepl('FLAG', x)) {warning('FLAG ')} 
     if (n == 3) {return(c(NA, entry))}
     if (n == 4) {return(entry)}
     if (n == 5) {return(c(NA, NA, entry[4], NA))} # gi|999627|pdb|1EPT|B

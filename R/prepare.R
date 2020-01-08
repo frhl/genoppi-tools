@@ -34,6 +34,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
 
     verifyCols <- (cols %in% cnames)
     if (!all(verifyCols)) stop(paste0('>', cols[!verifyCols], '< is not in the data columns.', collapse = '\n'))
+    if (length(cols) < 5) stop('expected at least 5 columns specified. Did you forget to include acession numbers?')
     tmpData <- data[,cols]
   
   } else {

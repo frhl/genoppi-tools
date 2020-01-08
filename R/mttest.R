@@ -18,6 +18,7 @@ mttest <- function(df, keep = c('imputed')){
   # isolate rep columns
   reps <- grepl('rep', colnames(df)) & unlist(lapply(df, is.numeric))
   calculated <- df[, reps]
+
   
   # calc moderated t-test
   myfit <- lmFit(calculated, method="robust")
@@ -27,9 +28,10 @@ mttest <- function(df, keep = c('imputed')){
   
   # return data frame with test results: gene, rep1, rep2, ..., logFC, pvalue, FDR 
   calculated <- data.frame(cbind(calculated, modtest[,-c(2,3,6)]))
-  calculated <- calculated[with(calculated, order(-logFC, FDR)),]
   calculated <- cbind(df$gene, calculated)
   colnames(calculated)[1] <- 'gene'
+  calculated <- calculated[with(calculated, order(-logFC, FDR)),]
+
   
   # keep columns
   keep = keep[(keep %in% colnames(df))]
