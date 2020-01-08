@@ -8,7 +8,8 @@
 
 ### --------------------------------------------------
 ### gene list overlap enrichment test + volcano plot
-plotOverlap <- function(df, bait, reference, title = '', subtitle = NULL, drawLabel = T){
+plotOverlap <- function(df, bait, reference, title = '', subtitle = NULL, drawLabel = T,
+                        col.genelist.sig = 'yellow'){
   
   require(ggplot2)
   require(ggrepel)
@@ -36,7 +37,7 @@ plotOverlap <- function(df, bait, reference, title = '', subtitle = NULL, drawLa
     geom_point(subset(df, gene==bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
     
     # label sig genes in gene list (yellow = significant, white = not significant)
-    geom_point(subset(df, gene %in% statistics$sigGenes & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="yellow") +
+    geom_point(subset(df, gene %in% statistics$sigGenes & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color=col.genelist.sig) +
     geom_point(subset(df, gene %in% statistics$sigGenes & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="white") +
     
     geom_point(subset(df, gene==bait | gene %in% statistics$sigGenes), mapping=aes(x=logFC, y=-log10(pvalue)),

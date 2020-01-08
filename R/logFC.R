@@ -3,10 +3,11 @@
 #' a case column with a bait column
 #' @param df a data.frame with bait and controls
 #' @author flassen
+#' @note assummes log2(bait1), log2(control1), log2(bait2).. 
 #' @export
 
 logFC <- function(df){
-  # assummes log2(bait1), log2(control1), log2(bait2).. 
+  
   dfNum <- sapply(df, is.numeric)
   dfNum <- df[, dfNum]
   pairs <- (ncol(dfNum))/2
@@ -16,5 +17,6 @@ logFC <- function(df){
     colBait = dfNum[, (i*2)-1]  # log2(bait) - log2(control)
     dfNum[[paste0('rep',i)]] = colBait - colMock
   }
+
   return(cbind(df, dfNum[,grepl('rep', colnames(dfNum))]))
 }

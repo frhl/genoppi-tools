@@ -8,13 +8,13 @@
 #' @export
 
 
-describe <- function(data, verbose = F){
+describe <- function(data, control = 'mock', verbose = F){
   
   info <- list()
   cnames <- tolower(colnames(data))
   info$cols.intensity<- grepl('int', cnames)
   info$cols.ratios <- grepl('ratio', cnames)
-  info$cols.control <- grepl('mock', cnames) & (!info$cols.ratios)
+  info$cols.control <- grepl(tolower(control), cnames) & (!info$cols.ratios)
   info$possiblebaits <- info$cols.intensity & (!info$cols.ratios) & (!info$cols.control)
   
   # That accession column can be both accession
@@ -32,5 +32,6 @@ describe <- function(data, verbose = F){
   }
   # check experiment
   if (grepl('itraq', paste(cnames, collapse = ''))) info$experiment <- 'iTRAQ'
+  
   return(info)
 }

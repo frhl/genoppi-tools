@@ -8,7 +8,7 @@
 #' @export
  
 
-mttest <- function(df, keep = c('imputed')){
+mttest <- function(df, keep = c('uniprot', 'imputed')){
   
   require(limma)
   
@@ -35,12 +35,8 @@ mttest <- function(df, keep = c('imputed')){
   colnames(calculated)[1] <- 'gene'
   
   # keep columns
-  if (!is.null(keep)){
-    stopifnot(all(keep %in% colnames(df)))
-    kept = data.frame(df[, unlist(lapply(keep, function(x) grepl(x, colnames(df))))])
-    colnames(kept) = keep
-    calculated <- cbind(calculated, kept)  
-  }  
+  keep = keep[(keep %in% colnames(df))]
+  calculated <- cbind(calculated, df[,keep])
   
   return(calculated)
 }

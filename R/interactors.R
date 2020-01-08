@@ -17,7 +17,7 @@ interactors <- function(bait, verbose = F, reference = 'inweb'){
   # choosen. So far, only inweb is supported.
   if (tolower(reference) == 'inweb'){
     data(inweb_hash)
-    inweb <- data.frame(gene=keys(inweb_hash))
+    inweb <- data.frame(gene=hash::keys(inweb_hash))
     inweb$significant <- inweb$gene %in% inweb_hash[[bait]]
     if (verbose) warn(paste('[InWeb]: Found', sum(inweb$significant), 'interactors for', bait))
     return(inweb)

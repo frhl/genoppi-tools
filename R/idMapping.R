@@ -106,6 +106,20 @@ acession.convert <- function(mat,  verbose = T){
 }
 
 
+aliases <- function(x){
+  
+  hm <- load_hashmap('~/Toolbox/packages/pRoteomics/data/uniprotid_to_hgnc')
+  hits = hm$keys() %in% x
+  
+  
+}
+
+
+
+
+
+
+
 
 
 

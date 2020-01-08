@@ -1,6 +1,5 @@
 #' @title pipeline for preparing genomics data for statistical analysis
-#' @description a function that will process ip data
-#' from different baits, files and cells
+#' @description Process IP intensities by normalizing and calculating logfold change. 
 #' @param bait a vector containing that contains the bait and cell type that should be matched in a column.
 #' @param infile the file path or data.frame that contains the raw data, i.e. accession numbers, intensity values, ratios etc.
 #' @param cols optional manual entry. A vector of columns that are present in the dataset header. Follows 
@@ -12,6 +11,7 @@
 #' @param filter character. only accession IDs of the filter specified are included.
 #' @param raw will return the data.frame alongside the raw intensity values.
 #' @param firstcol will change the name of the first column to the string indicated
+#' @param control the control or references. For instance for diffe
 #' @param filter.ignore will try to match the inputted vector or character to acession IDs. If sucessful,
 #' it will ignore further filtering of this item. This could for instance be used, if the bait only has
 #' one unique protein, and would therefore otherwise be filtered.
@@ -20,15 +20,13 @@
 #' @return a table that can be inputted to genoppi
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -1.8), 
-                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = 'gene',
+                    transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = 'gene', control = 'mock',
                     filter.ignore = NULL, verbose = F){
   
-  ## do some initial checks
-  ## and read in the file
+  # check input
   if (all(is.null(bait))) stop('Bait can not be NULL!')
-  #if (is.null(dim(infile)) & !file.exists(infile)) stop('Infile must be either a file path that exists or a data.frame.')
   if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
-  info = describe(data)
+  info = describe(data, control = control)
   cnames = colnames(data)
       
   ## if user has specified the columns to be used
@@ -85,6 +83,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
   matr.convert <- acession.convert(matr, verbose = verbose)
   tmpData$Accession <-matr.convert$hgnc # extract hgnc symbol
+  tmpData$uniprot <- matr.convert$uniprot.id
   
   # 5) impute if needed
   if (is.null(impute)) {
