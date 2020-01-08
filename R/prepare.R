@@ -11,7 +11,9 @@
 #' @param filter character. only accession IDs of the filter specified are included.
 #' @param raw will return the data.frame alongside the raw intensity values.
 #' @param firstcol will change the name of the first column to the string indicated
-#' @param control the control or references. For instance for diffe
+#' @param control the control or references. Normally bait vs control, but it could be bait in wildtype versus 
+#' bait in mutant for differential expression.
+#' @param peptide.threshold how many peptides must be dectected in the ms, in order to deem it a valid observation. Default is 2.
 #' @param filter.ignore will try to match the inputted vector or character to acession IDs. If sucessful,
 #' it will ignore further filtering of this item. This could for instance be used, if the bait only has
 #' one unique protein, and would therefore otherwise be filtered.
@@ -21,7 +23,7 @@
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -1.8), 
                     transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = 'gene', control = 'mock',
-                    filter.ignore = NULL, verbose = F){
+                    peptide.threshold = 2, filter.ignore = NULL, verbose = F){
   
   # check input
   if (all(is.null(bait))) stop('Bait can not be NULL!')
@@ -74,7 +76,7 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   # 3) remove non human proteins and proteins with < 2 unique peptides
   tmpData$filter.ignore <- detect(tmpData, filter.ignore) # allow user to ignore rows
   nignored <- sum(tmpData$filter.ignore)
-  tmpData$enoughProteins <- data[,info$col.unique.proteins] >= 2 | tmpData$filter.ignore
+  tmpData$enoughProteins <- data[,info$col.unique.proteins] >= peptide.threshold | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
   tmpData$human <- grepl(filter, tmpData[,1]) | tmpData$filter.ignore
   tmpData <- tmpData[tmpData$human,]
@@ -88,7 +90,9 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   
   # 5) impute if needed
   if (is.null(impute)) {
+    ndropped = sum(!complete.cases(tmpData))
     tmpData = tmpData[complete.cases(tmpData),] 
+    if (verbose & ndropped > 0) warn(paste('[impute] dropped',ndropped, 'value(s).'))
   } else { if (all(c('stdwidth' , 'shift') %in% names(impute))){
         tmpData = impute.gaussian(tmpData, impute$stdwidth, impute$shift)
       } else {stop('Use impute params "stdwidth" and "shift" only.')}
