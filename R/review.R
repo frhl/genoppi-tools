@@ -43,6 +43,10 @@ review <- function(params = NULL){
       #data.rep.corr <- cor(params$data$rep1, params$data$rep2)
     }
     
+    if ('data.bait.enriched' %in% lstnames){
+      lst$data.bait.enriched <- params$data.bait.enriched
+    } else {lst$data.bait.enriched <- NA}
+    
     if ('data.bait.enrichment' %in% lstnames){
       lst$data.bait.enrichment <- params$data.bait.enrichment
     }

@@ -32,8 +32,32 @@ get.indata.interactors <- function(data, known.interactors){
 
 get.summary.aggregate <- function(directory){
   
-  file = list.files(directory, recursive = T, full.names = T, pattern = '8JAN.+SUMMARY')
-  tab <- do.call(rbind, lapply(file, function(x) fread(x)))
+  #
+
+  file = list.files(directory, recursive = T, full.names = T, pattern = '9JAN.+SUMMARY')
+  
+  micom_summary <- lapply(file, function(x) read.csv(unique(x)))
+  micom_summary
+  
+  tab <- do.call(rbind, micom_summary)
+  
+  
+  tab <- do.call(rbind, lapply(file, function(x) read.csv(x)))
+
+  tab$martin <- gsub('03_MICOM','',tab$file)
+  tab$martin <- as.numeric(gsub('martin','',regmatches(tab$martin,regexpr("[0-9]+martin",tab$martin))))
+  tab <- tab[order(tab$martin), ]
+  boxplot(tab$rep.cor~tab$martin, main = 'variability of replicate correlations')
+  tab$data.bait.enriched[is.na(tab$data.bait.enriched)] <- FALSE
+
+  write.csv(tab, file = '~/Projects/03_MICOM/analysis.summary.csv')
+  
+  #tab$data.bait.enriched <- as.character(tab$data.bait.enriched)
+  #tab$data.bait.enriched[tab$data.bait.enriched == 'FALSE'] <- 'BLACK'
+  #tab$data.bait.enriched[tab$data.bait.enriched == 'TRUE'] <- 'RED'
+  #plot(tab$rep.cor~tab$martin, col = tab$data.bait.enriched)
+  
+  sum(tab$data.bait.enriched)/41
   
   
 }
