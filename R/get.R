@@ -34,16 +34,17 @@ get.summary.aggregate <- function(directory){
   
   #
 
-  file = list.files(directory, recursive = T, full.names = T, pattern = '9JAN.+SUMMARY')
+  file = list.files('~/Projects/03_MICOM/derived/', recursive = T, full.names = T, pattern = '9JAN.+SUMMARY')
   
-  micom_summary <- lapply(file, function(x) read.csv(unique(x)))
+  library(data.table)
+  
+  micom_summary <- lapply(unique(file), function(x) read.csv(unique(x))[1,])
   micom_summary
   
   tab <- do.call(rbind, micom_summary)
   
   
-  tab <- do.call(rbind, lapply(file, function(x) read.csv(x)))
-
+  
   tab$martin <- gsub('03_MICOM','',tab$file)
   tab$martin <- as.numeric(gsub('martin','',regmatches(tab$martin,regexpr("[0-9]+martin",tab$martin))))
   tab <- tab[order(tab$martin), ]

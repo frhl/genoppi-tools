@@ -50,6 +50,8 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     if (any(baitFound)) stop(paste(c(bait[baitFound], '(bait) not in data columns!.'), collapse = ' '))
     if (sum(info$cols.bait) == 1) stop('expected at least two columns of baits, only one was found!')
     if (sum(info$cols.mock) == 1) stop('expected at least two columns of controls, only one was found!')
+    if (is.null(dim(dataBait))) stop('Only a single column (bait) was found! ')
+    if (is.null(dim(dataMock))) stop('Only a single column (mock) was found! ')
     if (!ncol(dataBait)) stop('bait columns were not found!')
     if (!ncol(dataMock)) stop('mock columns were not found!')
     if (is.null(dataBait) | is.null(dataMock)) stop('disproprionate amount of bait and mock columns were found')
