@@ -34,7 +34,7 @@ get.summary.aggregate <- function(directory){
   
   #
 
-  file = list.files('~/Projects/03_MICOM/derived/', recursive = T, full.names = T, pattern = '9JAN.+SUMMARY')
+  file = list.files('~/Projects/03_MICOM/derived/', recursive = T, full.names = T, pattern = '(9|(10))JAN.+SUMMARY')
   
   library(data.table)
   

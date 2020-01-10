@@ -1,6 +1,6 @@
 #' @title pipeline for preparing genomics data for statistical analysis
 #' @description Process IP intensities by normalizing and calculating logfold change. 
-#' @param bait a vector containing that contains the bait and cell type that should be matched in a column.
+#' @param bait a vector or string containing that should be matched in the columns containing the bait.
 #' @param infile the file path or data.frame that contains the raw data, i.e. accession numbers, intensity values, ratios etc.
 #' @param cols optional manual entry. A vector of columns that are present in the dataset header. Follows 
 #' the format of columns: acession, bait1, mock1, bait2, mock2, bait3, ..
