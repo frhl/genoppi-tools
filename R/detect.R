@@ -1,6 +1,5 @@
 #' @title Detect protein and gene IDs
-#' @description Will look up acession IDs to
-#' see whether the entry is in it.
+#' @description Look up HGNC/UNIPROT aliases to see whether an entry can be found.
 #' @param data a data.frame
 #' @param entry a string or regular expression.
 #' @param details will return the entire data.frame which contains the entry

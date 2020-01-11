@@ -20,19 +20,15 @@ expandProxies <- function(data, cutoff.fdr = 0.1, top=10, verbose = T){
   
   # Find inweb interactors that are also present in data
   interact <- lapply(as.character(dat$gene), function(x){
-    # subset of proteins already in the data
+    # subset of interactors already in the data
     proteins = interactors(x, verbose = F)
     proteins = proteins[proteins$significant,]
     proteins = proteins[proteins$gene %in% data$gene,]
-    #proteins = data[data$gene %in% proteins$gene,]
-    #proteinsSorted <- proteins[rev(order(proteins$logFC)), ]
-    #proteinsSorted$significant <- TRUE # all are found in inweb
-    
     if (verbose) warn(paste('[InWeb]: Found', nrow(proteins), 'interactors for', x))
     return(proteins)
   })
   
-  # return list of desired results
+  # return list of desired genes
   names(interact) <- as.character(dat$gene)
   return(interact)
   
@@ -54,32 +50,6 @@ plotProxies <- function(data, proxylist, title.vs = 'control'){
     plotOverlap(data, bait, interactors, title)
   }
 }
-
-makeInteractionMap <- function(data, ...){
-  
-  stop('work in progress..')
-  
-  dat <- filter(data, ...)
-  mapping <- lapply(as.character(dat$gene), function(x){
-    proteins = interactors(x, verbose = T)
-    return(proteins)
-  })
-  
-  # data into inweb matrix
-  genes <- keys(inweb_hash)
-  comb <- lapply(mapping, function(x) x[2])
-  comb <- do.call(cbind, comb)
-  colnames(comb) <-  as.character(dat$gene)
-  rownames(comb) <- comb$genes
-  
-  # filter data
-  indata <- comb[comb$genes %in% dat$gene, ] # note: here we take all the proteins
-  indata[, ]
-  
-  #indata[, 2:ncol(indata)] <- indata[, c('genes', as.character(indata$genes))]
-  
-}
-
 
 
 
