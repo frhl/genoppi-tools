@@ -4,7 +4,15 @@
 \alias{plotOverlap}
 \title{Draw Overlap Plot}
 \usage{
-plotOverlap(df, bait, reference, title = "", drawLabel = T)
+plotOverlap(
+  df,
+  bait,
+  reference,
+  title = "",
+  subtitle = NULL,
+  drawLabel = T,
+  col.genelist.sig = "yellow"
+)
 }
 \arguments{
 \item{df}{something}
@@ -16,7 +24,6 @@ ne list overlap enrichment test + volcano plot
 Other genoppi: 
 \code{\link{designate}()},
 \code{\link{enrichment}()},
-\code{\link{genoppi}()},
 \code{\link{interactors}()},
 \code{\link{mttest}()},
 \code{\link{plotScatter}()},

@@ -4,7 +4,7 @@
 \alias{impute.gaussian}
 \title{Impute values}
 \usage{
-impute.gaussian(df, width = 0.3, shift = -1.8)
+impute.gaussian(df, width = 0.3, shift = -1.8, verbose = T)
 }
 \arguments{
 \item{df}{a data.frame with numeric columns}
@@ -27,7 +27,7 @@ which would consequently impact the moderated t.test.
 \note{
 No down-shifting and stdwith of 0.5 do not simualte low abudant missing values.
 down-shifting of 0.8 and stdwidth of 0.5 simulates low abundant missing values. 
-down-shifting of 3.6 and stdwith of 0.5 results in bi-modal distribution.
+down-shifting of 3.6 and stdwith of 0.5 results in (usually undesired) bi-modal distribution.
 }
 \references{
 (Perseus, Tyanova et al. 2016)

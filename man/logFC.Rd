@@ -13,6 +13,9 @@ logFC(df)
 Calculates log fold change by substracting
 a case column with a bait column
 }
+\note{
+assummes log2(bait1), log2(control1), log2(bait2)..
+}
 \author{
 flassen
 }

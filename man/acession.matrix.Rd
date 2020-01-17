@@ -13,7 +13,8 @@ and species.
 }
 \seealso{
 Other id: 
-\code{\link{acession.convert}()}
+\code{\link{acession.convert}()},
+\code{\link{detect}()}
 }
 \author{
 flassen

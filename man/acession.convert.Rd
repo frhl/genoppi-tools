@@ -9,13 +9,20 @@ acession.convert(mat, verbose = T)
 \arguments{
 \item{mat}{an acession.matrix}
 }
+\value{
+an acession matrix with two new columns:
+1) from will indicate whether the uniprot ID was found and converted to HGNC, NA will indicate this
+was not the case (i.e. the original symbol found in the acession string will be used).
+2) hgnc the symbol derived after conversion from uniprot ID to HGNC.
+}
 \description{
 Input an acession matrix to subset it accordingly. It will
 map uniprot IDs to their corresponding HGNC symbols.
 }
 \seealso{
 Other id: 
-\code{\link{acession.matrix}()}
+\code{\link{acession.matrix}()},
+\code{\link{detect}()}
 }
 \author{
 flassen

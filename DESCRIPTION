@@ -1,6 +1,6 @@
 Package: pRroteomics
 Title: Proteomics analysis using R
-Version: 0.1.5
+Version: 0.2.0
 Authors@R: 
     c(person(given = "Frederik",
              family = "Lassen",
@@ -33,26 +33,20 @@ Collate:
     'detect.R'
     'enrichment.R'
     'expandProxies.R'
-    'geneTable.R'
     'genesData.R'
-    'genoppi.R'
     'ggstamp.R'
     'idMapping.R'
     'impute.R'
     'interactors.R'
-    'localization.R'
     'logFC.R'
-    'mapp.R'
     'misc.R'
-    'mkhashtable.R'
     'mttest.R'
     'normalize.R'
     'plotOverlap.R'
     'plotScatter.R'
     'plotVolcano.R'
     'prepare.R'
-    'ptable.R'
     'pTransform.R'
     'review.R'
-    'snpToGene.R'
+    'vplot.R'
 

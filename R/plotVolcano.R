@@ -31,9 +31,9 @@ plotVolcano <- function(df, bait, title = '', sub1 = 'proteins detected.', sub2 
     geom_point(alpha=0.5, size=1.5, color=ifelse(df$significant, "springgreen3", "royalblue2")) +
     
     # label bait (red = signficant, orange = not significant)
-    geom_point(subset(df, gene==bait & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="red") + 
-    geom_point(subset(df, gene==bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
-    geom_point(subset(df, gene==bait), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="black", shape=1) +	
+    geom_point(subset(df, gene %in% bait & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="red") + 
+    geom_point(subset(df, gene %in% bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
+    geom_point(subset(df, gene %in% bait), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="black", shape=1) +	
     geom_text_repel(subset(df, gene==bait), mapping=aes(label=gene), arrow=arrow(length=unit(0.015, 'npc')),
                     box.padding=unit(0.15, "lines"), point.padding=unit(0.2, "lines"), color="black", size=3) +
     

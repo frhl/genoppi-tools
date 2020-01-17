@@ -13,6 +13,7 @@ designate(data, ...)
 }
 \description{
 Designate observations as significant based on filtering them using dplyr::filter.
+Can be used in conjunction with genoppi plotting functions.
 }
 \examples{
 \dontrun{
@@ -21,7 +22,6 @@ data = df \%>\% genoppi.ttest() ∂\%>\% designate(FDR < 0.1, pvalue < 0.05)}
 \seealso{
 Other genoppi: 
 \code{\link{enrichment}()},
-\code{\link{genoppi}()},
 \code{\link{interactors}()},
 \code{\link{mttest}()},
 \code{\link{plotOverlap}()},

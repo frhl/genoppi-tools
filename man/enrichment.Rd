@@ -22,7 +22,6 @@ interacts with bait.
 \seealso{
 Other genoppi: 
 \code{\link{designate}()},
-\code{\link{genoppi}()},
 \code{\link{interactors}()},
 \code{\link{mttest}()},
 \code{\link{plotOverlap}()},

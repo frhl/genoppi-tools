@@ -4,7 +4,13 @@
 \alias{mkdir}
 \title{make genoppi directories}
 \usage{
-mkdir(bait, cell, variation = "")
+mkdir(
+  bait = "",
+  cell = "",
+  variation = "",
+  run = "",
+  name = paste0(bait, "_", cell)
+)
 }
 \arguments{
 \item{bait}{what bait was used?}
@@ -12,6 +18,8 @@ mkdir(bait, cell, variation = "")
 \item{cell}{what cell type?}
 
 \item{variation}{add a variation to the outputted name}
+
+\item{name}{the name that is to be saved. Default is a combination of bait and cell.}
 }
 \value{
 will create a directory based on relative paths and return

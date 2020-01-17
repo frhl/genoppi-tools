@@ -33,14 +33,14 @@ plotOverlap <- function(df, bait, reference, title = '', subtitle = NULL, drawLa
     geom_point(alpha=0.5, size=1.5, color=ifelse(df$significant, "springgreen3", "royalblue2")) +
     
     # label bait (red = signficant, orange = not significant)
-    geom_point(subset(df, gene==bait & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="red") + 
-    geom_point(subset(df, gene==bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
+    geom_point(subset(df, gene %in% bait & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="red") + 
+    geom_point(subset(df, gene %in% bait & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="orange") +
     
     # label sig genes in gene list (yellow = significant, white = not significant)
     geom_point(subset(df, gene %in% statistics$sigGenes & significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color=col.genelist.sig) +
     geom_point(subset(df, gene %in% statistics$sigGenes & !significant), mapping=aes(x=logFC, y=-log10(pvalue)), size=2, color="white") +
     
-    geom_point(subset(df, gene==bait | gene %in% statistics$sigGenes), mapping=aes(x=logFC, y=-log10(pvalue)),
+    geom_point(subset(df, gene %in% bait | gene %in% statistics$sigGenes), mapping=aes(x=logFC, y=-log10(pvalue)),
                size=2, color="black", shape=1) +
     
     # title (with statistics$fisherP) and theme

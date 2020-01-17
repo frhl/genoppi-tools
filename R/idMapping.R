@@ -6,7 +6,7 @@
 
 strSplitGene <- function(vec, get = 'symbol'){
   # modify accession to get gene name
-  browser()
+  warn('deprecated. Will be reomved in future release.')
   if (get %in% 'symbol'){
     gene = unlist(lapply(strsplit(as.character(vec), '\\|'), function(x) x[length(x)]))
     gene = unlist(lapply(strsplit(gene, '\\_'), function(x) x[1]))
@@ -15,7 +15,6 @@ strSplitGene <- function(vec, get = 'symbol'){
     
     
   }
-
   return(gene)
 }
 
@@ -107,46 +106,3 @@ acession.convert <- function(mat,  verbose = T){
   return(mat)
   
 }
-
-
-aliases <- function(x){
-  
-  hm <- load_hashmap('~/Toolbox/packages/pRoteomics/data/uniprotid_to_hgnc')
-  hits = hm$keys() %in% x
-  
-  
-}
-
-
-
-
-
-
-
-
-
-
-
-#uni <- as.character(mat$uniprot$id) %in% dat$uniprot_gn_id
-#sym <- as.character(mat$symbol) %in% dat$hgnc_symbol
-
-#ncbi_aliases[['U3KPZ7']]
-
-
-#uniprotid_to_hgnc <- hashmap(keys=hgnc_uniprot_mapping$uniprot_gn_id, values=hgnc_uniprot_mapping$hgnc_symbol)
-#save_hashmap(uniprotid_to_hgnc, file = 'uniprotid_to_hgnc')
-
-
-#.libPaths('~/Toolbox/rlib/')
-#library('biomaRt')
-#mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
-#ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
-#filters = listFilters(ensembl)
-#dat = getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'uniprot_gn_symbol'), mart = ensembl)
-#dat = getBM(attributes = c('hgnc_symbol', 'reactome', 'reactome_gene'), mart = ensembl)
-
-#hgnc_uniprot_mapping = dat
-#save(hgnc_uniprot_mapping, file = 'hgnc_uniprot_mapping.RData')
-
-#htable <- mkhashtable(dat)
-

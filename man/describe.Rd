@@ -4,7 +4,7 @@
 \alias{describe}
 \title{Describe data}
 \usage{
-describe(data, verbose = F)
+describe(data, control = "mock", verbose = F)
 }
 \arguments{
 \item{data}{a data.frame with proteomics data}
@@ -12,9 +12,8 @@ describe(data, verbose = F)
 \item{verbose}{print to stdout}
 }
 \description{
-A function that will take a data.frame
-and describe the columns, type of data which will be returned in
-a list
+Return boolean vector with length equal to number of columns, 
+indicating which index contains intensity, ratios, baits column.
 }
 \author{
 flassen

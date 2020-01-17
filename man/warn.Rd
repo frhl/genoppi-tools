@@ -4,10 +4,12 @@
 \alias{warn}
 \title{warnings to stderr}
 \usage{
-warn(msg)
+warn(msg, file = NULL)
 }
 \arguments{
 \item{msg}{the message.}
+
+\item{file}{write logs to file as well as stderr.}
 }
 \description{
 sends a message to stderr
