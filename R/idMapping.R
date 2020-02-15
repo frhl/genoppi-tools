@@ -64,7 +64,7 @@ acession.matrix <- function(vec){
   
   ## merge data.frames
   mat <- as.data.frame(cbind(mat, isoforms))
-  mat$uniprot <- NULL # remove old uniprot
+  #mat$uniprot <- NULL # remove old uniprot
   
   return(mat)
 }
@@ -106,3 +106,47 @@ acession.convert <- function(mat,  verbose = T){
   return(mat)
   
 }
+
+
+expand_accession_id = function(vec, pattern = 'uniprot-isoform', split = '-'){
+  
+  vec = as.character(vec)
+  identifiers = unlist(strsplit(pattern, split))
+  max_identifiers_found = max(unlist(lapply(strsplit(vec, split), length)))
+  if (max_identifiers_found != length(identifiers)) {
+    stop(paste('expected', length(identifiers), 'identifiers in data. Found', max_identifiers_found))}
+  #stopifnot(sum(is.na(vec)) < 2) # ensure that NAs not present more than once..
+  # iterate through data and assign to indentifier
+  x_expanded = list()
+  count = 0
+  for (row in vec){
+      count = count + 1
+      x_expanded[[count]] = list()
+    for (i in 1:length(identifiers)){
+      x_expanded[[count]][[identifiers[i]]] = unlist(strsplit(row,split))[i]
+    }
+  }
+  # convert list of list into data.frame
+  expanded = as.data.frame(do.call(rbind, x_expanded))
+  expanded = as.data.frame(sapply(expanded, function(x) as.character(unlist(x))))
+  if (any(sapply(expanded, function(x) all(is.na(x))))) warning('accession id pattern was not valid.')
+  return(expanded)
+}
+
+uniprot_to_hgnc = function(uniprot){
+  
+  require(hashmap)
+  hm <- load_hashmap('~/Toolbox/packages/pRoteomics/data/uniprotid_to_hgnc')
+  return(hm[[uniprot]])
+  
+}
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@
 #' @family genoppi
 #' @export
 
-plotScatter <- function(df, bait, title = ''){
+plotScatterMinimal <- function(df, bait, title = '', size_point = 3, size_text=3, color_alpha=0.8){
   
   # inital checks of input
   stopifnot(any(grepl('rep', colnames(df))))
@@ -31,20 +31,25 @@ plotScatter <- function(df, bait, title = ''){
       p <- ggplot(temp_df, aes(x=temp_rep1, y=temp_rep2)) +
         
         # plot all proteins (green = significant, blue = not significant)
-        geom_point(alpha=0.5, size=1.5, color=ifelse(df$significant, "springgreen3", "royalblue2")) +
+        geom_point(alpha=0.95, size=size_point+0.3, color=ifelse(df$significant, "black", "grey"), shape=ifelse(df$significant, 1, 1)) +
+        geom_point(alpha=color_alpha, size=size_point, color=ifelse(df$significant, "springgreen3", "grey")) +
+        
         
         # label bait (red = signficant, orange = not significant)
-        geom_point(subset(temp_df, gene==bait & significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=2, color="red") + 
-        geom_point(subset(temp_df, gene==bait & !significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=2, color="orange") +
-        geom_point(subset(temp_df, gene==bait), mapping=aes(x=temp_rep1, y=temp_rep2), size=2, color="black", shape=1) +	
+        geom_point(subset(temp_df, gene==bait & significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=size_point, color="red") + 
+        geom_point(subset(temp_df, gene==bait & !significant), mapping=aes(x=temp_rep1, y=temp_rep2),size=size_point, color="orange") +
+        geom_point(subset(temp_df, gene==bait), mapping=aes(x=temp_rep1, y=temp_rep2), size=size_point, color="black", shape=1) +	
         geom_text_repel(subset(temp_df, gene==bait), mapping=aes(label=gene),
                         arrow=arrow(length=unit(0.015, 'npc')), box.padding=unit(0.15, "lines"),
-                        point.padding=unit(0.2, "lines"), color="black", size=3) +
+                        point.padding=unit(0.2, "lines"), color="black", size=size_text) +
         
         # identity line, title (with correlation), theme
         geom_abline(intercept=0, slope=1, linetype="longdash", size=0.2) +
         labs(title = title, subtitle = paste("correlation:",format(r,digits=3))) + xlab(col1) + ylab(col2) +
-        theme_bw() + theme(axis.line=element_line(color="grey")) + ggstamp()
+        ## theme
+        theme_bw() +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+              panel.background = element_blank())
       
       print(p)
       

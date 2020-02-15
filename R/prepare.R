@@ -23,8 +23,8 @@
 
 prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shift = -1.8), 
                     transform = 'log2', normalization = 'median', filter = "HUMAN", raw = F, firstcol = 'gene', control = 'mock',
-                    peptide.threshold = 2, filter.ignore = NULL, verbose = F){
-  
+                    peptide.threshold = 2, filter.ignore = NULL, pattern.accession = 'uniprot-isoform', split.accession = '-', verbose = F){
+
   # check input
   if (all(is.null(bait))) stop('Bait can not be NULL!')
   if (is.character(infile)) data = read.csv(infile) else data = as.data.frame(infile)
@@ -33,12 +33,12 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
       
   ## if user has specified the columns to be used
   if (!is.null(cols)){
-
+    
     verifyCols <- (cols %in% cnames)
     if (!all(verifyCols)) stop(paste0('>', cols[!verifyCols], '< is not in the data columns.', collapse = '\n'))
     if (length(cols) < 5) stop('expected at least 5 columns specified. Did you forget to include acession numbers?')
     tmpData <- data[,cols]
-  
+    
   } else {
     ## try to geuss the columns that is be used
     baitFound <- !unlist(lapply(bait, function(x) any(grepl(x, cnames))))
@@ -67,6 +67,10 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
     tmpData <- cbind(data[info$col.accession], dataComb)
   }
   
+  # check some more data
+  if (sum(info$col.unique.proteins) >  1) stop('More than one column indicating unique proteins. Please, only input one!')
+
+  
   # Replace zeros with NAs
   tmpData[tmpData == 0] <- NA
   info$count.na <- sum(as.numeric(is.na(tmpData)))
@@ -76,19 +80,35 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   tmpData = normalize(tmpData, type = normalization)
   
   # 3) remove non human proteins and proteins with < 2 unique peptides
+  #browser()
   tmpData$filter.ignore <- detect(tmpData, filter.ignore) # allow user to ignore rows
   nignored <- sum(tmpData$filter.ignore)
-  tmpData$enoughProteins <- data[,info$col.unique.proteins] >= peptide.threshold | tmpData$filter.ignore
-  tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
-  tmpData$human <- grepl(filter, tmpData[,1]) | tmpData$filter.ignore
-  tmpData <- tmpData[tmpData$human,]
+  
+  # QC 3.1 Check that enough unique peptides/proteins
+  if (sum(info$col.unique.proteins) == 1){
+    tmpData$enoughProteins <- data[,info$col.unique.proteins] >= peptide.threshold | tmpData$filter.ignore
+    tmpData <- tmpData[tmpData$enoughProteins == TRUE,]
+  } else { warning('No columns indicating amount of unique proteins/peptides! Quality Check >unique peptides< skipped.') } 
+  
+  # QC 3.1 Check for human proteins
+  if (!is.null(filter)){
+    tmpData$human <- grepl(filter, tmpData[,1]) | tmpData$filter.ignore
+    tmpData <- tmpData[tmpData$human,]
+  } else { warning('No HUMAN filter applied! Assuming all peptides are OK.')}
   if (verbose & nignored > 0) warn(paste('[filtering]', nignored, 'entries was ignored.'))
   
   # 4) convert from uniprot to HGNC\
+  #browser()
+  
+  #accession_id_expanded = expand_accession_id(gsub('sp', '', tmpData[,1]), pattern = pattern.accession, split = split.accession)
+  #tmpData$uniprot <- accession_id_expanded$uniprot
+  #tmpData$gene <- uniprot_to_hgnc(accession_id_expanded$uniprot)
+
+  # old framework
   matr <- acession.matrix(tmpData[,1]) # first column is the acession
   matr.convert <- acession.convert(matr, verbose = verbose)
   tmpData$Accession <-matr.convert$hgnc # extract hgnc symbol
-  tmpData$uniprot <- matr.convert$uniprot.id
+  tmpData$uniprot <- matr.convert$uniprot
   
   # 5) impute if needed
   if (is.null(impute)) {
@@ -104,10 +124,10 @@ prepare <- function(bait, infile, cols = NULL, impute = list(stdwidth = 0.5, shi
   info$total.rows.remove <- nrow(data) - nrow(tmpData)
   tmpData = logFC(tmpData)
 
-  
+  #browser()
   # clean out the data and remove intensity columns
   if (!raw){
-    tmpData = tmpData[,grepl('rep|Acc|impute', colnames(tmpData))]
+    tmpData = tmpData[,grepl('rep|Acc|impute|gene', colnames(tmpData))]
     if (!is.null(firstcol)) colnames(tmpData)[1] <- 'gene'
     return(tmpData)
   } else (

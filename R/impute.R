@@ -18,18 +18,19 @@
 
 impute.gaussian <- function(df, width = 0.3, shift = -1.8, verbose = T){
 
-  df$imputed <- as.logical(apply(df, 1, function(x) any(is.na(x)))) 
+  numerics <- as.logical(sapply(df, function(x) is.numeric(x)))
   cols <- as.vector(unlist(lapply(df, function(x) is.numeric(x) & any(is.na(x)))))
+  df$imputed <- as.logical(apply(df[numerics], 1, function(x) any(is.na(x)))) 
   impute <- function(x){
     std <- sd(x, na.rm = T) * width # adjsuted/down-shifted mean (sample mean - SD * shift)
     me <- median(x, na.rm = T) + sd(x, na.rm = T) * shift  # adjsuted SD (sample SD * width)
     x[is.na(x)] <- rnorm(sum(as.numeric(is.na(x))), mean = me, sd = std)
     return(x)
   }
-  nimputed <- sum(is.na(df))
+  nimputed <- sum(is.na(df[,numerics]))
   if (verbose & nimputed > 0) warn(paste('[impute] imputed',nimputed, 'value(s).'))
-  if (sum(cols) == 1) df[, cols] <- impute(df[,cols])
-  if (sum(cols) > 1) df[, cols] <- lapply(df[,cols], impute)
+  if (sum(cols) == 1) df[, cols] <- impute(df[,cols & numerics])
+  if (sum(cols) > 1) df[, cols] <- lapply(df[,cols & numerics], impute)
   return(df)
 }
 

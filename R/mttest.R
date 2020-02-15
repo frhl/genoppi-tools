@@ -30,8 +30,6 @@ mttest <- function(df, keep = c('imputed')){
   calculated <- data.frame(cbind(calculated, modtest[,-c(2,3,6)]))
   calculated <- cbind(df$gene, calculated)
   colnames(calculated)[1] <- 'gene'
-  calculated <- calculated[with(calculated, order(-logFC, FDR)),]
-
   
   # keep columns
   keep = keep[(keep %in% colnames(df))]
@@ -39,5 +37,8 @@ mttest <- function(df, keep = c('imputed')){
   names(ndf) = keep
   calculated <- cbind(calculated, ndf)
   
+  # order columns
+  calculated <- calculated[with(calculated, order(-logFC, FDR)),]
+
   return(calculated)
 }

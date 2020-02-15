@@ -20,9 +20,10 @@ detect <- function(data, entry, details = F){
     matc <- acession.convert(mata, verbose = F)
     data <- cbind(data, matc)
     ## get row in whitch the entry can be found
-    result <- apply(sapply(matc, function(x) grepl(entry, x)), 1, any)
-    if (!details) return(result)
-    else return(data[result,])
+    res_special <- apply(sapply(matc, function(x) grepl(entry, x)), 1, any)
+    res_simple <- as.vector(sapply(as.character(data$Accession), function(x) grepl(entry, x))) # remove this
+    if (!details) return(res_special | res_simple)
+    else return(data[res_special | res_simple,])
   } else return(FALSE)
 
 }
